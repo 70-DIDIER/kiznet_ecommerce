@@ -3,8 +3,8 @@
 
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
-            <img src="{{ asset($siteInfos['logo'] ?? 'assets/images/dutyfree-logo-BRFPKRQG.png') }}"
-                alt="" height="80">
+                <img src="{{ asset($siteInfos['logo'] ?? 'assets/images/dutyfree-logo-BRFPKRQG.png') }}"
+                    alt="" height="80" style="border-radius: 50%;">
         </a>
 
 

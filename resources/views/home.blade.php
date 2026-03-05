@@ -1,51 +1,490 @@
 @extends('layouts.app')
 
-@section('title', 'Archipel - DUTYFREE')
+@section('title', 'Archipel - TechShop Europe')
 
 @section('content')
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --primary: #0a0f1e;
+            --accent: #00d4ff;
+            --accent2: #ff6b2b;
+            --surface: #111827;
+            --surface2: #1e2a3a;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--primary);
+            color: var(--text);
+        }
+
         .btn-explorer {
-            background: #ADD8E6 !important;
-            border: 2px solid #ADD8E6 !important;
-            color: #003d7a !important;
+            background: transparent !important;
+            border: 2px solid var(--accent) !important;
+            color: var(--accent) !important;
+            font-family: 'Space Mono', monospace !important;
+            font-size: 0.85rem !important;
+            letter-spacing: 0.05em;
             transition: all 0.3s ease;
-            /* transition plus rapide et discrète */
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Effet hover plus subtil */
+        .btn-explorer::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+
         .btn-explorer:hover {
-            background: #003d7a !important;
-            /* fond sombre pour contraste */
-            color: #fff !important;
-            /* texte blanc */
-            transform: scale(1.05);
-            /* léger agrandissement */
-            box-shadow: 0 4px 10px rgba(0, 61, 122, 0.3);
-            /* ombre plus douce */
+            color: var(--primary) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
         }
 
+        .btn-explorer:hover::before {
+            transform: translateX(0);
+        }
 
         /* ============================================
-                           BOUTON SCROLL TO TOP AVEC PROGRESSION
+                           HERO SECTION
+                           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0d1b35 40%, #0a1628 100%) !important;
+            position: relative;
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 70% 50%, rgba(0, 212, 255, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(255, 107, 43, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 55%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300d4ff' stop-opacity='0.05'/%3E%3Cstop offset='100%25' stop-color='%230a0f1e' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='600' height='600'/%3E%3C/svg%3E") no-repeat center;
+            background-size: cover;
+        }
+
+        /* Grid décoratif en arrière-plan */
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+            pointer-events: none;
+        }
+
+        .hero .intro-excerpt h1 {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.15;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .hero .intro-excerpt h1 .accent-word {
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .hero .intro-excerpt h1 span {
+            color: var(--text-muted);
+            font-size: 0.75em;
+            font-weight: 300;
+        }
+
+        .hero .intro-excerpt p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 480px;
+        }
+
+        /* Badge "Livraison depuis l'Europe" */
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+        }
+
+        .hero-badge::before {
+            content: '▶';
+            font-size: 0.6em;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Stats rapides dans le hero */
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .hero-stat-item .stat-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .hero-stat-item .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ============================================
+                           PRODUCT SECTION
+                           ============================================ */
+        .product-section {
+            background: var(--primary);
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .product-section::before {
+            content: 'TECH';
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8rem;
+            color: rgba(0, 212, 255, 0.03);
+            font-weight: 700;
+            pointer-events: none;
+            letter-spacing: -0.05em;
+        }
+
+        .product-section .section-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .product-section p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        /* Cards produits */
+        .product-item {
+            display: block;
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none !important;
+        }
+
+        .product-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .product-item:hover {
+            border-color: rgba(0, 212, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.1);
+        }
+
+        .product-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-item .product-thumbnail {
+            height: 200px;
+            width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .product-item:hover .product-thumbnail {
+            transform: scale(1.04);
+        }
+
+        .product-item .product-title {
+            font-family: 'DM Sans', sans-serif !important;
+            font-size: 0.9rem !important;
+            font-weight: 600 !important;
+            color: #e2e8f0 !important;
+            margin-top: 12px !important;
+            margin-bottom: 6px !important;
+        }
+
+        .product-item .product-price {
+            font-family: 'Space Mono', monospace !important;
+            font-size: 1rem !important;
+            color: #00d4ff !important;
+            font-weight: 700 !important;
+            display: block !important;
+        }
+
+        .product-item .icon-cross {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: rotate(-45deg) scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .product-item:hover .icon-cross {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+
+        .product-item .icon-cross img {
+            width: 14px;
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(170deg);
+        }
+
+        /* Select devise */
+        #currency-select-home {
+            background: var(--surface2);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        #currency-select-home:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        /* ============================================
+                           WHY CHOOSE US
+                           ============================================ */
+        .why-choose-section {
+            background: var(--surface);
+            padding: 90px 0;
+            position: relative;
+        }
+
+        .why-choose-section::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+        }
+
+        .why-choose-section .section-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .why-choose-section > .container > .row > .col-lg-6 > p {
+            color: var(--text-muted);
+        }
+
+        .feature {
+            background: var(--surface2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            height: 100%;
+            transition: border-color 0.3s ease;
+        }
+
+        .feature:hover {
+            border-color: rgba(0, 212, 255, 0.25);
+        }
+
+        .feature .icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(255,107,43,0.1));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .feature .icon img {
+            width: 22px;
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(170deg) brightness(1.2);
+        }
+
+        .feature h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ============================================
+                           WE HELP SECTION
+                           ============================================ */
+        .we-help-section {
+            background: var(--primary);
+            padding: 90px 0;
+        }
+
+        .we-help-section .section-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .we-help-section p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .we-help-section .custom-list li {
+            color: var(--text-muted);
+            padding: 8px 0 8px 28px;
+            position: relative;
+            font-size: 0.92rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .we-help-section .custom-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .we-help-section .imgs-grid .grid img {
+            border-radius: 12px;
+            filter: brightness(0.7) saturate(0.8);
+            transition: filter 0.3s ease;
+        }
+
+        .we-help-section .imgs-grid .grid img:hover {
+            filter: brightness(0.85) saturate(1);
+        }
+
+        /* ============================================
+                           TESTIMONIALS
+                           ============================================ */
+        .testimonial-section {
+            background: var(--surface);
+            padding: 90px 0;
+        }
+
+        .testimonial-section .section-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .testimonial-block blockquote p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .testimonial-block .author-info h3 {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .testimonial-block .author-info .position {
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+        }
+
+        /* ============================================
+                           SCROLL TO TOP
                            ============================================ */
         .scroll-to-top {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 60px;
-            height: 60px;
-            background: #003d7a;
+            width: 56px;
+            height: 56px;
+            background: var(--surface2);
+            border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 50%;
             cursor: pointer;
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 4px 20px rgba(0, 61, 122, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,28 +493,32 @@
         .scroll-to-top.show {
             opacity: 1;
             visibility: visible;
-            transform: scale(1);
         }
 
         .scroll-to-top:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(0, 61, 122, 0.5);
+            box-shadow: 0 6px 30px rgba(0, 212, 255, 0.35);
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .scroll-to-top:hover .scroll-icon {
+            color: var(--primary);
         }
 
         .scroll-to-top:active {
             transform: scale(0.95);
         }
 
-        /* Icône flèche */
         .scroll-icon {
             position: absolute;
-            color: #ffffff;
-            font-size: 20px;
+            color: var(--accent);
+            font-size: 18px;
             z-index: 2;
             animation: bounceUp 2s infinite;
+            transition: color 0.2s;
         }
 
-        /* Cercle de progression SVG */
         .progress-ring {
             position: absolute;
             top: 0;
@@ -88,87 +531,206 @@
             stroke-linecap: round;
         }
 
-        /* Animation de la flèche */
         @keyframes bounceUp {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-5px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
         }
 
-        /* Responsive mobile */
         @media (max-width: 768px) {
             .scroll-to-top {
-                width: 50px;
-                height: 50px;
+                width: 48px;
+                height: 48px;
                 bottom: 20px;
                 right: 20px;
             }
 
             .progress-ring {
-                width: 50px;
-                height: 50px;
+                width: 48px;
+                height: 48px;
             }
 
-            .progress-ring-circle {
-                r: 22;
-                cx: 25;
-                cy: 25;
-            }
-
-            .scroll-icon {
-                font-size: 18px;
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 20px;
             }
         }
 
-        /* Variante couleur alternative au scroll */
-        .scroll-to-top.scrolled {
-            background: #ff8c00;
+        /* Boutons hero */
+        .btn-secondary {
+            background: var(--accent) !important;
+            border: 2px solid var(--accent) !important;
+            color: var(--primary) !important;
+            font-family: 'Space Mono', monospace !important;
+            font-weight: 700 !important;
+            font-size: 0.85rem !important;
+            letter-spacing: 0.04em;
+            transition: all 0.3s ease;
         }
 
-        .scroll-to-top.scrolled .scroll-icon {
-            animation: bounceUp 1.5s infinite;
+        .btn-secondary:hover {
+            background: transparent !important;
+            color: var(--accent) !important;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
         }
 
-        /* Fix dimensions for product images */
-        .product-thumbnail {
-            height: 250px;
+        /* Overrides globaux */
+        .product-section .row > .col-md-12.col-lg-3 p {
+            color: var(--text-muted);
+        }
+    </style>
+
+    <style>
+        /* ============================================
+           HERO PRODUCTS GRID
+        ============================================ */
+        .hero-products {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-product-card {
+            display: block;
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 212, 255, 0.12);
+            border-radius: 12px;
+            padding: 14px;
+            text-decoration: none !important;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-product-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00d4ff, #ff6b2b);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-product-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.1);
+        }
+
+        .hero-product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .hero-product-card img.hero-product-img {
             width: 100%;
+            height: 110px;
             object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .hero-product-card:hover img.hero-product-img {
+            transform: scale(1.06);
+        }
+
+        .hero-product-card .hero-product-name {
+            font-family: 'DM Sans', sans-serif !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            color: #e2e8f0 !important;
+            margin: 8px 0 4px !important;
+            line-height: 1.3 !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .hero-product-card .hero-product-price {
+            font-family: 'Space Mono', monospace !important;
+            font-size: 0.82rem !important;
+            color: #00d4ff !important;
+            font-weight: 700 !important;
+            display: block !important;
+        }
+
+        /* N'afficher que les 4 premiers produits dans le hero */
+        .hero-products .hero-product-col:nth-child(n+5) {
+            display: none;
+        }
+
+        @media (max-width: 991px) {
+            .hero-products { display: none; }
         }
     </style>
 
     <!-- Start Hero Section -->
-    <div class="hero"
-        style="background: url('{{ asset('assets/images/pexels-tuurt-2954405.jpg') }}') no-repeat center center; background-size: cover;">
-        <div class="container">
-            <div class="row justify-content-between">
+    <div class="hero">
+        <div class="hero-grid"></div>
+        <div class="container" style="position: relative; z-index: 1;">
+            <div class="row justify-content-between align-items-center">
+
+                <!-- Gauche : texte -->
                 <div class="col-lg-5">
                     <div class="intro-excerpt">
-                        <h1>DutyFree Express <span class="d-block">Réservez avant votre vol</span></h1>
-                        <p class="mb-4" style="font-size: 1.1rem; line-height: 1.1;">
+                        <div class="hero-badge">LIVRAISON DEPUIS L'EUROPE</div>
+                        <h1>
+                            <span class="accent-word">KIZNET</span>Shop
+                            <span class="d-block" style="color: var(--text-muted); font-size: 0.7em; font-weight: 300; letter-spacing: 0.01em;">Commandez, recevez, payez à la livraison</span>
+                        </h1>
+                        <p class="mb-4">
                             {{ $siteInfos['site_description'] ?? 'Valeur par défaut' }}
                         </p>
-
                         <p>
                             <a href="{{ route('shop') }}" class="btn btn-secondary me-2"
-                                style="font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 1rem;">
-                                Acheter maintenant
+                                style="font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.85rem;">
+                                Voir le catalogue →
                             </a>
                         </p>
-
+                        <div class="hero-stats">
+                            <div class="hero-stat-item">
+                                <div class="stat-num">500+</div>
+                                <div class="stat-label">Produits disponibles</div>
+                            </div>
+                            <div class="hero-stat-item">
+                                <div class="stat-num">0€</div>
+                                <div class="stat-label">Paiement à la livraison</div>
+                            </div>
+                            <div class="hero-stat-item">
+                                <div class="stat-num">EU</div>
+                                <div class="stat-label">Expédié depuis l'Europe</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {{-- <div class="col-lg-7">
-                    <div class="hero-img-wrap">
-                        <img src="{{ asset('assets/images/couch.png') }}" class="img-fluid" alt="Couch">
+
+                <!-- Droite : grille produits 2×2 -->
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="hero-products">
+                        @foreach ($products->take(4) as $product)
+                            <div class="hero-product-col">
+                                <a class="hero-product-card"
+                                   href="{{ route('cart') }}"
+                                   data-id="{{ $product->id }}"
+                                   data-name="{{ $product->name }}"
+                                   data-price="{{ $product->price }}"
+                                   data-image="{{ asset($product->image_path) }}">
+                                    <img src="{{ asset($product->image_path) }}"
+                                         class="img-fluid hero-product-img"
+                                         alt="{{ $product->name }}">
+                                    <h3 class="hero-product-name">{{ $product->name }}</h3>
+                                    <strong class="hero-product-price product-price" data-base-price="{{ $product->price }}">
+                                        {{ $product->price }} F CFA
+                                    </strong>
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
-                </div> --}}
+                </div>
+
             </div>
         </div>
     </div>
@@ -181,10 +743,10 @@
 
                 <!-- Start Column 1 -->
                 <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-                    <h2 class="mb-4 section-title">Des produits de marques prestigieuses.</h2>
+                    <h2 class="mb-4 section-title">Informatique &amp; Électronique de qualité européenne.</h2>
                     <p class="mb-4">
-                        Découvrez une sélection exclusive de parfums, alcools, chocolats et accessoires.
-                        Qualité authentique, prix Duty Free et retrait rapide à l'aéroport.
+                        Ordinateurs, composants PC, périphériques et accessoires tech — sélectionnés en Europe,
+                        livrés chez vous. Commandez en gros ou au détail, payez uniquement à la réception.
                     </p>
                     <p><a href="{{ route('shop') }}" class="btn btn-explorer">Explorer</a></p>
                     <div class="mt-3">
@@ -215,6 +777,8 @@
         </div>
     </div>
     <!-- End Product Section -->
+
+    {{-- ===== SCRIPT DYNAMIQUE INCHANGÉ ===== --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const EU_COUNTRIES = ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE"];
@@ -267,7 +831,17 @@
             }
 
             function attachAddToCart() {
+                // Section produits principale
                 document.querySelectorAll('.product-item').forEach(el => {
+                    el.addEventListener('click', (ev) => {
+                        ev.preventDefault();
+                        const d = el.dataset;
+                        addToCart({ product_id: Number(d.id), name: d.name || '', price: Number(d.price) || 0, image: d.image || '', quantity: 1 });
+                        window.location = '{{ route('cart') }}';
+                    });
+                });
+                // Cards hero
+                document.querySelectorAll('.hero-product-card').forEach(el => {
                     el.addEventListener('click', (ev) => {
                         ev.preventDefault();
                         const d = el.dataset;
@@ -278,9 +852,16 @@
             }
 
             function updateHomePrices() {
+                // Section produits principale
                 document.querySelectorAll('.product-item').forEach(el => {
                     const p = Number(el.dataset.price) || 0;
                     const priceEl = el.querySelector('.product-price');
+                    if (priceEl) priceEl.textContent = formatProductPrice(p);
+                });
+                // Cards hero
+                document.querySelectorAll('.hero-product-card').forEach(el => {
+                    const p = Number(el.dataset.price) || 0;
+                    const priceEl = el.querySelector('.hero-product-price');
                     if (priceEl) priceEl.textContent = formatProductPrice(p);
                 });
             }
@@ -311,60 +892,59 @@
         <div class="container">
             <div class="row justify-content-between">
                 <div class="col-lg-6">
-                    <h2 class="section-title">Pourquoi nous choisir ?</h2>
-                    <p>Précommandez vos produits Duty Free en ligne et récupérez-les directement à l'aéroport.
-                        Simple, rapide et sécurisé – aucun paiement en ligne requis.</p>
+                    <h2 class="section-title">Pourquoi commander chez nous ?</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 32px;">
+                        Commandez vos équipements informatiques en ligne — en gros ou au détail —
+                        et payez uniquement à la livraison. Zéro risque, 100% fiable.
+                    </p>
 
                     <div class="row my-5">
-                        <div class="col-6 col-md-6">
+                        <div class="col-6 col-md-6 mb-4">
                             <div class="feature">
                                 <div class="icon">
-                                    <img src="{{ asset('assets/images/truck.svg') }}" alt="Image" class="img-fluid">
+                                    <img src="{{ asset('assets/images/truck.svg') }}" alt="Livraison" class="img-fluid">
                                 </div>
-                                <h3>Retrait rapide à l'aéroport</h3>
-                                <p>Réservez vos produits en ligne et récupérez-les au comptoir sans attendre.</p>
+                                <h3>Livraison à domicile</h3>
+                                <p>Vos commandes partent d'Europe et sont livrées directement chez vous, partout.</p>
                             </div>
                         </div>
 
-                        <div class="col-6 col-md-6">
+                        <div class="col-6 col-md-6 mb-4">
                             <div class="feature">
                                 <div class="icon">
-                                    <img src="{{ asset('assets/images/bag.svg') }}" alt="Image" class="img-fluid">
+                                    <img src="{{ asset('assets/images/bag.svg') }}" alt="Shopping" class="img-fluid">
                                 </div>
-                                <h3>Shopping simple & pratique</h3>
-                                <p>Parcourez notre catalogue, ajoutez vos articles au panier et précommandez en quelques
-                                    clics.</p>
+                                <h3>Commande gros &amp; détail</h3>
+                                <p>Particulier ou revendeur, commandez la quantité qui vous convient sans minimum imposé.</p>
                             </div>
                         </div>
 
-                        <div class="col-6 col-md-6">
+                        <div class="col-6 col-md-6 mb-4">
                             <div class="feature">
                                 <div class="icon">
-                                    <img src="{{ asset('assets/images/support.svg') }}" alt="Image" class="img-fluid">
+                                    <img src="{{ asset('assets/images/support.svg') }}" alt="Support" class="img-fluid">
                                 </div>
-                                <h3>Assistance disponible</h3>
-                                <p>Notre équipe est là pour répondre à vos questions sur les commandes et le retrait.</p>
+                                <h3>Support technique dédié</h3>
+                                <p>Notre équipe vous aide à choisir les bons composants selon vos besoins et budget.</p>
                             </div>
                         </div>
 
-                        <div class="col-6 col-md-6">
+                        <div class="col-6 col-md-6 mb-4">
                             <div class="feature">
                                 <div class="icon">
-                                    <img src="{{ asset('assets/images/return.svg') }}" alt="Image" class="img-fluid">
+                                    <img src="{{ asset('assets/images/return.svg') }}" alt="Paiement" class="img-fluid">
                                 </div>
-                                <h3>Flexibilité & tranquillité</h3>
-                                <p>Vous pouvez modifier ou annuler vos commandes avant le retrait, facilement et rapidement.
-                                </p>
+                                <h3>Paiement à la livraison</h3>
+                                <p>Aucun paiement en ligne requis. Vous payez seulement quand vous recevez votre colis.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
                 <div class="col-lg-5">
                     <div class="img-wrap">
                         <img src="{{ asset('assets/images/pexels-magda-ehlers-pexels-2861656_1_cropped.png') }}"
-                            alt="Image" class="img-fluid">
+                            alt="Image" class="img-fluid" style="border-radius: 16px; filter: brightness(0.75) saturate(0.7);">
                     </div>
                 </div>
 
@@ -381,30 +961,30 @@
                     <div class="imgs-grid">
                         <div class="grid grid-1">
                             <img src="{{ asset('assets/images/bellboy-tipped-by-company-executives_cropped.jpg') }}"
-                                alt="Untree.co" class="img-fluid">
+                                alt="Tech" class="img-fluid">
                         </div>
                         <div class="grid grid-2">
-                            <img src="{{ asset('assets/images/10945220_cropped.jpg') }}" alt="Untree.co" class="img-fluid">
+                            <img src="{{ asset('assets/images/10945220_cropped.jpg') }}" alt="Tech" class="img-fluid">
                         </div>
                         <div class="grid grid-3">
-                            <img src="{{ asset('assets/images/pexels-karola-g-5239881_cropped.jpg') }}" alt="Untree.co"
+                            <img src="{{ asset('assets/images/pexels-karola-g-5239881_cropped.jpg') }}" alt="Tech"
                                 class="img-fluid">
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5 ps-lg-5">
-                    <h2 class="section-title mb-4">Précommandez vos produits Duty Free facilement</h2>
+                    <h2 class="section-title mb-4">Commandez votre matériel tech depuis l'Europe, simplement</h2>
                     <p>
-                        Parcourez notre catalogue de parfums, alcools, chocolats et accessoires, sélectionnés pour
-                        les voyageurs. Réservez vos articles en ligne et récupérez-les rapidement à l'aéroport,
-                        sans paiement en ligne.
+                        Parcourez notre catalogue d'ordinateurs portables, PC de bureau, composants
+                        (GPU, CPU, RAM, SSD) et périphériques. Sélectionnés chez des fournisseurs européens
+                        réputés, livrés chez vous — aucun paiement requis à la commande.
                     </p>
 
                     <ul class="list-unstyled custom-list my-4">
-                        <li>Précommande simple et rapide en quelques clics</li>
-                        <li>Retrait direct au comptoir à l'aéroport</li>
-                        <li>Sélection des meilleures marques Duty Free</li>
-                        <li>Flexibilité et modifications possibles avant le retrait</li>
+                        <li>Catalogue complet : laptops, desktops, composants, accessoires</li>
+                        <li>Expédition depuis l'Europe avec suivi en temps réel</li>
+                        <li>Disponible en gros (revendeurs) et au détail (particuliers)</li>
+                        <li>Paiement à la livraison — zéro risque, zéro avance</li>
                     </ul>
                     <p><a href="{{ route('shop') }}" class="btn btn-explorer">Explorer le catalogue</a></p>
                 </div>
@@ -445,28 +1025,22 @@
                                                 <div class="author-info">
                                                     <div class="author-pic">
                                                         @php
-                                                            $imagePath =
-                                                                $testimonial->image ?: 'assets/images/person-1.png';
-                                                            // Si l'image commence par /storage/, c'est une URL complète
+                                                            $imagePath = $testimonial->image ?: 'assets/images/person-1.png';
                                                             if (str_starts_with($imagePath, '/storage/')) {
                                                                 $imageUrl = asset($imagePath);
                                                             } elseif (filter_var($imagePath, FILTER_VALIDATE_URL)) {
-                                                                // Si c'est déjà une URL complète
                                                                 $imageUrl = $imagePath;
                                                             } else {
-                                                                // Sinon, utiliser asset()
                                                                 $imageUrl = asset($imagePath);
                                                             }
                                                         @endphp
                                                         <img src="{{ $imageUrl }}" alt="{{ $testimonial->name }}"
                                                             class="img-fluid"
-                                                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;">
+                                                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: 2px solid rgba(0,212,255,0.3);">
                                                     </div>
                                                     <h3 class="font-weight-bold">{{ $testimonial->name }}</h3>
-                                                    <span
-                                                        class="position d-block mb-3">{{ $testimonial->position ?? 'Client' }}</span>
+                                                    <span class="position d-block mb-3">{{ $testimonial->position ?? 'Client' }}</span>
 
-                                                    {{-- Affichage des étoiles --}}
                                                     <div class="stars mb-3">
                                                         @for ($i = 1; $i <= 5; $i++)
                                                             @if ($i <= $testimonial->stars)
@@ -481,9 +1055,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- END item -->
                             @empty
-                                {{-- Message si aucun témoignage --}}
                                 <div class="item">
                                     <div class="row justify-content-center">
                                         <div class="col-lg-8 mx-auto">
@@ -503,11 +1075,11 @@
     </div>
     <!-- End Testimonial Slider -->
 
-    <!-- Bouton Scroll to Top avec indicateur de progression -->
+    <!-- Bouton Scroll to Top -->
     <div id="scrollToTop" class="scroll-to-top">
-        <svg class="progress-ring" width="60" height="60">
-            <circle class="progress-ring-circle" stroke="#ff8c00" stroke-width="3" fill="transparent" r="27"
-                cx="30" cy="30" />
+        <svg class="progress-ring" width="56" height="56">
+            <circle class="progress-ring-circle" stroke="var(--accent)" stroke-width="2" fill="transparent" r="25"
+                cx="28" cy="28" />
         </svg>
         <i class="fa fa-chevron-up scroll-icon"></i>
     </div>
@@ -517,70 +1089,35 @@
             const scrollBtn = document.getElementById('scrollToTop');
             const progressCircle = document.querySelector('.progress-ring-circle');
 
-            // Calculer la circonférence du cercle
             const radius = progressCircle.r.baseVal.value;
             const circumference = 2 * Math.PI * radius;
 
-            // Initialiser le stroke-dasharray
             progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
             progressCircle.style.strokeDashoffset = circumference;
 
-            // Fonction pour mettre à jour la progression
             function updateProgress() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrollPercent = scrollTop / docHeight;
 
-                // Calculer l'offset du cercle
                 const offset = circumference - (scrollPercent * circumference);
                 progressCircle.style.strokeDashoffset = offset;
 
-                // Afficher/masquer le bouton
                 if (scrollTop > 300) {
                     scrollBtn.classList.add('show');
                 } else {
                     scrollBtn.classList.remove('show');
                 }
-
-                // Changer la couleur après 50% du scroll
-                if (scrollPercent > 0.5) {
-                    scrollBtn.classList.add('scrolled');
-                } else {
-                    scrollBtn.classList.remove('scrolled');
-                }
             }
 
-            // Événement scroll
             window.addEventListener('scroll', updateProgress);
 
-            // Clic sur le bouton - retour en haut smooth
             scrollBtn.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            // Initialiser au chargement
             updateProgress();
         });
     </script>
-
-    <style>
-        /* Définir la police de tout le site */
-        body {
-            font-family: 'Poppins', sans-serif;
-            /* ou une autre police */
-        }
-
-        /* Si tu veux juste une section précise */
-        .hero,
-        .product-section,
-        .footer-section {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
-
-
 
 @endsection
