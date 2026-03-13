@@ -483,7 +483,16 @@
     }
 
     function removeItem(id) {
-        const cart = getCart().filter(i => i.product_id !== id);
+        let cart = getCart();
+        // Gestion robuste : si l'id est NaN ou null, on essaie de trouver par d'autres moyens ou on filtre les invalides
+        if (isNaN(id)) {
+            // Si l'id est NaN, on ne peut pas filtrer par id. 
+            // Mais dans ce cas, c'est probablement un produit corrompu.
+            // On peut vider le panier ou filtrer tous les NaN si on veut être agressif.
+            cart = cart.filter(i => !isNaN(Number(i.product_id)));
+        } else {
+            cart = cart.filter(i => Number(i.product_id) !== id);
+        }
         saveCart(cart);
     }
 

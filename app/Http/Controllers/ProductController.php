@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\product;
 use App\Models\category;
+use App\Models\product;
 use App\Models\Testimonial;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
 use App\Services\ImageService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -30,6 +30,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = category::orderBy('name')->get(['id', 'name']);
+
         return view('admin.products.create', compact('categories'));
     }
 
@@ -46,16 +47,28 @@ class ProductController extends Controller
             'category_id' => ['required', 'exists:categories,id'],
             'image' => ['nullable', 'image', 'max:2048'],
             'image_path' => ['nullable', 'string'],
+            'images.*' => ['nullable', 'image', 'max:2048'],
         ]);
 
-        // Gestion de l'image: priorité à l'upload, sinon chemin fourni
+        // Gestion de l'image principale: priorité à l'upload, sinon chemin fourni
         if ($request->hasFile('image')) {
             $validated['image_path'] = ImageService::resizeAndStore($request->file('image'));
         } elseif ($request->filled('image_path')) {
             $validated['image_path'] = (string) $request->input('image_path');
         }
 
-        product::create($validated);
+        $product = product::create($validated);
+
+        // Gestion des images supplémentaires
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $path = ImageService::resizeAndStore($image);
+                $product->images()->create([
+                    'image_path' => $path,
+                    'sort_order' => $index,
+                ]);
+            }
+        }
 
         return redirect()
             ->route('admin.products.index')
@@ -67,9 +80,20 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = product::with('category')->findOrFail($id);
+        $product = product::with(['category', 'images'])->findOrFail($id);
 
         return view('admin.products.show', compact('product'));
+    }
+
+    public function publicShow(string $id)
+    {
+        $product = product::with(['category', 'images'])->findOrFail($id);
+        $relatedProducts = product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->limit(4)
+            ->get();
+
+        return view('product-detail', compact('product', 'relatedProducts'));
     }
 
     /**
@@ -103,6 +127,9 @@ class ProductController extends Controller
             'category_id' => ['required', 'exists:categories,id'],
             'image' => ['nullable', 'image', 'max:2048'],
             'image_path' => ['nullable', 'string'],
+            'images.*' => ['nullable', 'image', 'max:2048'],
+            'delete_images' => ['nullable', 'array'],
+            'delete_images.*' => ['exists:product_images,id'],
         ]);
 
         if ($request->hasFile('image')) {
@@ -112,6 +139,31 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
+
+        // Supprimer les images sélectionnées
+        if ($request->filled('delete_images')) {
+            $imagesToDelete = \App\Models\ProductImage::whereIn('id', $request->delete_images)->get();
+            foreach ($imagesToDelete as $img) {
+                // Supprimer le fichier physique si ce n'est pas une URL externe
+                if (! Str::startsWith($img->image_path, 'http')) {
+                    $relativePath = str_replace('/storage/', '', $img->image_path);
+                    Storage::disk('public')->delete($relativePath);
+                }
+                $img->delete();
+            }
+        }
+
+        // Ajouter de nouvelles images
+        if ($request->hasFile('images')) {
+            $lastOrder = $product->images()->max('sort_order') ?? -1;
+            foreach ($request->file('images') as $index => $image) {
+                $path = ImageService::resizeAndStore($image);
+                $product->images()->create([
+                    'image_path' => $path,
+                    'sort_order' => $lastOrder + $index + 1,
+                ]);
+            }
+        }
 
         return redirect()
             ->route('admin.products.index')
@@ -133,10 +185,12 @@ class ProductController extends Controller
 
     public function randomProduit()
     {
-        $products = Product::inRandomOrder()->limit(3)->get();
+        $products = product::with('category')->latest()->limit(8)->get();
+        $bestSellers = product::with('category')->inRandomOrder()->limit(4)->get();
+        $categories = category::withCount('products')->get();
         $testimonials = Testimonial::latest()->get();
 
-        return view('home', compact('products', 'testimonials'));
+        return view('home', compact('products', 'bestSellers', 'categories', 'testimonials'));
     }
 
     // Pour la page ABOUT

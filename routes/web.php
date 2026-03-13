@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\TestimonialController;
-use App\Http\Controllers\SiteInfoController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NewsletterController;
-
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SiteInfoController;
+use App\Http\Controllers\TestimonialController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'randomProduit']);
 
@@ -23,6 +22,8 @@ Route::get('/shop', function () {
     return view('shop');
 })->name('shop');
 
+Route::get('/product/{id}', [ProductController::class, 'publicShow'])->name('product.show');
+
 Route::get('/about', function () {
     return view('about');
 })->name('about');
@@ -31,6 +32,7 @@ Route::get('/about', function () {
 
 Route::get('/about', function () {
     $testimonials = \App\Models\Testimonial::inRandomOrder()->limit(3)->get();
+
     return view('about', compact('testimonials'));
 })->name('about');
 
@@ -54,12 +56,9 @@ Route::get('/checkout', function () {
     return view('checkout');
 })->name('checkout');
 
-
-
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
@@ -70,7 +69,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('testimonials', TestimonialController::class);
     Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
     Route::put('orders/{id}/status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.update-status');
-    
+
     // Site Infos - Routes personnalisées
     Route::controller(SiteInfoController::class)->prefix('site-infos')->name('site-infos.')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -79,6 +78,5 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
         Route::put('/{section}', 'updateSection')->name('update-section');
     });
 });
-
 
 Route::post('/contact-submit', [ContactController::class, 'submit'])->name('contact.submit');

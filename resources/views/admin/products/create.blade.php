@@ -124,6 +124,16 @@
                             <small class="text-muted">Images sous public/admin/assets/images/products.</small>
                         </div>
 
+                        <div class="mb-4">
+                            <label for="images" class="form-label">Images supplémentaires</label>
+                            <input type="file" id="images" name="images[]" multiple accept="image/*"
+                                   class="form-control @error('images.*') is-invalid @enderror">
+                            @error('images.*')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="text-muted">Vous pouvez sélectionner plusieurs images.</small>
+                        </div>
+
                         <div class="d-flex gap-2">
                             <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">Annuler</a>
                             <button type="submit" class="btn btn-primary">Enregistrer</button>

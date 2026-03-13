@@ -96,21 +96,60 @@
                 </div>
 
                 {{-- Image --}}
-                <div class="mb-3">
-                    <label class="form-label">Image du produit</label>
+                <div class="mb-4">
+                    <label class="form-label">Image principale du produit</label>
                     <div class="mb-2">
-                        <img src="{{ $product->image_path ? asset($product->image_path) : asset('admin/assets/images/products/img-1.png') }}"
+                        <img src="{{ $product->image_path ? (Str::startsWith($product->image_path, 'http') ? $product->image_path : asset($product->image_path)) : asset('admin/assets/images/products/img-1.png') }}"
                              alt="Image actuelle"
-                             style="height: 70px; width: 70px; object-fit: cover; border-radius:6px;">
+                             style="height: 100px; width: 100px; object-fit: cover; border: 1px solid #ddd; border-radius:6px;">
                     </div>
                     <input
                         type="file"
                         name="image"
                         class="form-control @error('image') is-invalid @enderror"
+                        accept="image/*"
                     >
                     @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+
+                {{-- Images supplémentaires --}}
+                <div class="mb-4">
+                    <label class="form-label">Images supplémentaires</label>
+                    
+                    @if($product->images->count() > 0)
+                        <div class="row g-2 mb-3">
+                            @foreach($product->images as $img)
+                                <div class="col-md-2 text-center">
+                                    <div class="position-relative">
+                                        <img src="{{ Str::startsWith($img->image_path, 'http') ? $img->image_path : asset($img->image_path) }}" 
+                                             alt="Image supplémentaire" 
+                                             class="img-thumbnail" 
+                                             style="height: 80px; width: 80px; object-fit: cover;">
+                                        <div class="mt-1">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="delete_images[]" value="{{ $img->id }}" id="del_img_{{ $img->id }}">
+                                                <label class="form-check-label text-danger small" for="del_img_{{ $img->id }}">Supprimer</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <input
+                        type="file"
+                        name="images[]"
+                        multiple
+                        class="form-control @error('images.*') is-invalid @enderror"
+                        accept="image/*"
+                    >
+                    @error('images.*')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="text-muted">Sélectionnez de nouvelles images à ajouter.</small>
                 </div>
 
                 <div class="d-flex gap-2">

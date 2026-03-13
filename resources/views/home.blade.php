@@ -657,6 +657,96 @@
             display: block !important;
         }
 
+        /* Carousel Styles */
+        .hero-carousel {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-carousel .item {
+            padding: 10px;
+        }
+
+        .hero-carousel-card {
+            display: block;
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 212, 255, 0.12);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none !important;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-carousel-card:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 212, 255, 0.2);
+        }
+
+        .hero-carousel-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+            margin-bottom: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-carousel-card:hover img {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        .hero-carousel-card h3 {
+            font-family: 'DM Sans', sans-serif !important;
+            font-size: 1.1rem !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            margin-bottom: 10px !important;
+        }
+
+        .hero-carousel-card .price {
+            font-family: 'Space Mono', monospace !important;
+            font-size: 1.2rem !important;
+            color: var(--accent) !important;
+            font-weight: 700 !important;
+        }
+
+        .hero-carousel-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .hero-carousel-nav button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .hero-carousel-nav button:hover {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 991px) {
+            .hero-carousel-container { margin-top: 50px; }
+        }
+
         /* N'afficher que les 4 premiers produits dans le hero */
         .hero-products .hero-product-col:nth-child(n+5) {
             display: none;
@@ -674,7 +764,7 @@
             <div class="row justify-content-between align-items-center">
 
                 <!-- Gauche : texte -->
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="intro-excerpt">
                         <div class="hero-badge">LIVRAISON DEPUIS L'EUROPE</div>
                         <h1>
@@ -682,52 +772,59 @@
                             <span class="d-block" style="color: var(--text-muted); font-size: 0.7em; font-weight: 300; letter-spacing: 0.01em;">Commandez, recevez, payez à la livraison</span>
                         </h1>
                         <p class="mb-4">
-                            {{ $siteInfos['site_description'] ?? 'Valeur par défaut' }}
+                            L'excellence technologique européenne à votre portée. Trouvez les meilleurs ordinateurs et composants avec une garantie de qualité et un paiement sécurisé à la réception.
                         </p>
-                        <p>
-                            <a href="{{ route('shop') }}" class="btn btn-secondary me-2"
+                        <div class="d-flex gap-3 mb-5">
+                            <a href="{{ route('shop') }}" class="btn btn-secondary px-4 py-3"
                                 style="font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.85rem;">
                                 Voir le catalogue →
                             </a>
-                        </p>
+                            <a href="#categories" class="btn btn-explorer px-4 py-3">Explorer par catégorie</a>
+                        </div>
                         <div class="hero-stats">
                             <div class="hero-stat-item">
                                 <div class="stat-num">500+</div>
-                                <div class="stat-label">Produits disponibles</div>
+                                <div class="stat-label">Produits</div>
                             </div>
                             <div class="hero-stat-item">
-                                <div class="stat-num">0€</div>
-                                <div class="stat-label">Paiement à la livraison</div>
+                                <div class="stat-num">100%</div>
+                                <div class="stat-label">Sécurisé</div>
                             </div>
                             <div class="hero-stat-item">
                                 <div class="stat-num">EU</div>
-                                <div class="stat-label">Expédié depuis l'Europe</div>
+                                <div class="stat-label">Stock Europe</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Droite : grille produits 2×2 -->
-                <div class="col-lg-6 d-none d-lg-block">
-                    <div class="hero-products">
-                        @foreach ($products->take(4) as $product)
-                            <div class="hero-product-col">
-                                <a class="hero-product-card"
-                                   href="{{ route('cart') }}"
-                                   data-id="{{ $product->id }}"
-                                   data-name="{{ $product->name }}"
-                                   data-price="{{ $product->price }}"
-                                   data-image="{{ asset($product->image_path) }}">
-                                    <img src="{{ asset($product->image_path) }}"
-                                         class="img-fluid hero-product-img"
-                                         alt="{{ $product->name }}">
-                                    <h3 class="hero-product-name">{{ $product->name }}</h3>
-                                    <strong class="hero-product-price product-price" data-base-price="{{ $product->price }}">
-                                        {{ $product->price }} F CFA
-                                    </strong>
-                                </a>
-                            </div>
-                        @endforeach
+                <!-- Droite : Carousel de produits dynamique -->
+                <div class="col-lg-5 col-xl-5 offset-xl-1 d-none d-lg-block hero-carousel-container">
+                    <div class="hero-carousel-wrap">
+                        <div class="hero-carousel">
+                            @foreach ($bestSellers as $product)
+                                <div class="item">
+                                    <a href="{{ route('product.show', $product->id) }}" class="hero-carousel-card">
+                                        {{-- <div class="badge-featured" style="position: absolute; top: 20px; right: 20px; background: var(--accent); color: var(--primary); padding: 5px 15px; border-radius: 100px; font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; z-index: 2;">
+                                            BEST SELLER
+                                        </div> --}}
+                                        <img src="{{ Str::startsWith($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}" 
+                                             class="img-fluid" alt="{{ $product->name }}">
+                                        <h3>{{ Str::limit($product->name, 40) }}</h3>
+                                        <div class="price product-price" data-price="{{ $product->price }}">
+                                            {{ number_format($product->price, 0, ',', ' ') }} F CFA
+                                        </div>
+                                        <div class="mt-3">
+                                            <span class="btn btn-secondary btn-sm px-4">Voir Détails</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="hero-carousel-nav">
+                            <button id="hero-prev"><i class="fas fa-chevron-left"></i></button>
+                            <button id="hero-next"><i class="fas fa-chevron-right"></i></button>
+                        </div>
                     </div>
                 </div>
 
@@ -736,47 +833,113 @@
     </div>
     <!-- End Hero Section -->
 
-    <!-- Start Product Section -->
-    <div class="product-section">
+    <!-- Categories Section -->
+    <div id="categories" class="product-section" style="padding: 100px 0 50px;">
         <div class="container">
-            <div class="row">
-
-                <!-- Start Column 1 -->
-                <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-                    <h2 class="mb-4 section-title">Informatique &amp; Électronique de qualité européenne.</h2>
-                    <p class="mb-4">
-                        Ordinateurs, composants PC, périphériques et accessoires tech — sélectionnés en Europe,
-                        livrés chez vous. Commandez en gros ou au détail, payez uniquement à la réception.
-                    </p>
-                    <p><a href="{{ route('shop') }}" class="btn btn-explorer">Explorer</a></p>
-                    <div class="mt-3">
-                        <select class="form-select" id="currency-select-home">
-                            <option value="XOF">FCFA (XOF)</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                    </div>
+            <div class="row mb-5">
+                <div class="col-md-12 text-center">
+                    <h2 class="section-title mb-3">Nos Catégories</h2>
+                    <p class="text-muted">Parcourez notre sélection par type de matériel</p>
                 </div>
-                <!-- End Column 1 -->
-
-                @foreach ($products as $product)
-                    <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                        <a class="product-item" href="{{ route('cart') }}" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-price="{{ $product->price }}" data-image="{{ asset($product->image_path) }}">
-                            <img src="{{ asset($product->image_path) }}" class="img-fluid product-thumbnail"
-                                alt="{{ $product->name }}">
-                            <h3 class="product-title">{{ $product->name }}</h3>
-                            <strong class="product-price">{{ $product->price }}F CFA</strong>
-                            <span class="icon-cross">
-                                <img src="{{ asset('assets/images/cross.svg') }}" class="img-fluid" alt="Cross">
-                            </span>
-                        </a>
-                    </div>
+            </div>
+            <div class="row g-4 justify-content-center">
+                @foreach($categories as $cat)
+                <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                    <a href="{{ route('shop', ['category' => $cat->id]) }}" class="category-card text-center d-flex flex-column align-items-center justify-content-center p-4 rounded-4 text-decoration-none h-100" style="background: var(--surface2); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; min-height: 180px;">
+                        <div class="category-icon mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background: rgba(0,212,255,0.1); border-radius: 50%; flex-shrink: 0;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        </div>
+                        <h3 class="h6 text-white mb-1" style="word-break: break-word;">{{ $cat->name }}</h3>
+                        <span class="text-muted small">{{ $cat->products_count }} produits</span>
+                    </a>
+                </div>
                 @endforeach
-
             </div>
         </div>
     </div>
-    <!-- End Product Section -->
+
+    <!-- Featured Products Section -->
+    <div class="product-section">
+        <div class="container">
+            <div class="row mb-5 align-items-end">
+                <div class="col-md-6">
+                    <h2 class="section-title">Nos Nouveautés</h2>
+                    <p class="text-muted">Les derniers arrivages de nos fournisseurs européens.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ route('shop') }}" class="btn btn-explorer">Voir tout le catalogue</a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                @foreach ($products as $product)
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <a class="product-item" href="{{ route('product.show', $product->id) }}" 
+                           data-id="{{ $product->id }}" 
+                           data-name="{{ $product->name }}" 
+                           data-price="{{ $product->price }}" 
+                           data-image="{{ Str::startsWith($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}">
+                            <div class="position-relative">
+                                <img src="{{ Str::startsWith($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}" class="img-fluid product-thumbnail mb-3" alt="{{ $product->name }}">
+                                @if($product->stock < 5 && $product->stock > 0)
+                                    <span class="position-absolute top-0 start-0 badge bg-danger m-2">Plus que {{ $product->stock }}!</span>
+                                @elseif($product->stock == 0)
+                                    <span class="position-absolute top-0 start-0 badge bg-secondary m-2">Rupture</span>
+                                @endif
+                            </div>
+                            <h3 class="product-title">{{ $product->name }}</h3>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <strong class="product-price">{{ number_format($product->price, 0, ',', ' ') }} F CFA</strong>
+                                <span class="icon-cross">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Best Sellers Section -->
+    <div class="product-section" style="background: var(--surface);">
+        <div class="container">
+            <div class="row mb-5 text-center">
+                <div class="col-md-12">
+                    <h2 class="section-title">Meilleures Ventes</h2>
+                    <p class="text-muted">Les produits les plus plébiscités par nos clients.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                @foreach ($bestSellers as $product)
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="product-item-horizontal p-3 rounded-4 h-100" style="background: var(--primary); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease;">
+                            <div class="row g-2 align-items-center h-100">
+                                <div class="col-4">
+                                    <div style="width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 8px; background: var(--surface2); padding: 5px;">
+                                        <img src="{{ Str::startsWith($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}" 
+                                             class="img-fluid w-100 h-100" style="object-fit: contain;" alt="{{ $product->name }}">
+                                    </div>
+                                </div>
+                                <div class="col-8 d-flex flex-column justify-content-center">
+                                    <h4 class="h6 text-white mb-1" style="font-size: 0.85rem; line-height: 1.3; min-height: 2.6em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        {{ $product->name }}
+                                    </h4>
+                                    <strong class="text-accent d-block mb-2" style="color: var(--accent); font-family: 'Space Mono', monospace; font-size: 0.9rem;">
+                                        {{ number_format($product->price, 0, ',', ' ') }} F CFA
+                                    </strong>
+                                    <div>
+                                        <a href="{{ route('product.show', $product->id) }}" class="text-accent small text-decoration-none" style="color: var(--accent); font-weight: 600;">Détails →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
 
     {{-- ===== SCRIPT DYNAMIQUE INCHANGÉ ===== --}}
     <script>
@@ -831,24 +994,8 @@
             }
 
             function attachAddToCart() {
-                // Section produits principale
-                document.querySelectorAll('.product-item').forEach(el => {
-                    el.addEventListener('click', (ev) => {
-                        ev.preventDefault();
-                        const d = el.dataset;
-                        addToCart({ product_id: Number(d.id), name: d.name || '', price: Number(d.price) || 0, image: d.image || '', quantity: 1 });
-                        window.location = '{{ route('cart') }}';
-                    });
-                });
-                // Cards hero
-                document.querySelectorAll('.hero-product-card').forEach(el => {
-                    el.addEventListener('click', (ev) => {
-                        ev.preventDefault();
-                        const d = el.dataset;
-                        addToCart({ product_id: Number(d.id), name: d.name || '', price: Number(d.price) || 0, image: d.image || '', quantity: 1 });
-                        window.location = '{{ route('cart') }}';
-                    });
-                });
+                // Pour la section Nouveautés, on laisse le lien naturel aller vers la page détail
+                // On n'ajoute pas de preventDefault() ici
             }
 
             function updateHomePrices() {
@@ -884,6 +1031,28 @@
 
             updateHomePrices();
             attachAddToCart();
+
+            // Initialisation du Carousel Hero (Best Sellers)
+            if (document.querySelector('.hero-carousel')) {
+                const heroSlider = tns({
+                    container: '.hero-carousel',
+                    items: 1,
+                    slideBy: 'page',
+                    autoplay: true,
+                    autoplayButtonOutput: false,
+                    controls: false,
+                    nav: false,
+                    mouseDrag: true,
+                    gutter: 20,
+                    edgePadding: 0,
+                    autoplayTimeout: 5000,
+                    speed: 800,
+                    mode: 'carousel'
+                });
+
+                document.getElementById('hero-prev').onclick = () => heroSlider.goTo('prev');
+                document.getElementById('hero-next').onclick = () => heroSlider.goTo('next');
+            }
         });
     </script>
 

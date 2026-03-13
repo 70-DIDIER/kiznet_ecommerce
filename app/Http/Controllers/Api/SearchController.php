@@ -28,21 +28,27 @@ class SearchController extends Controller
                 ], 422);
             }
 
-            $query = Product::with('category');
+            $query = Product::with(['category', 'images']);
 
             if ($request->filled('input')) {
-                $query->where('name', 'like', '%' . $request->input . '%');
+                $query->where('name', 'like', '%'.$request->input.'%');
             }
 
             if ($request->filled('category_id')) {
                 $query->where('category_id', $request->category_id);
             }
 
-            $results = $query->get(['id', 'name', 'description', 'price', 'stock', 'image_path', 'category_id']);
+            $results = $query->latest()->paginate($request->get('per_page', 12));
 
             return response()->json([
                 'success' => true,
-                'data' => $results,
+                'data' => $results->items(),
+                'meta' => [
+                    'current_page' => $results->currentPage(),
+                    'last_page' => $results->lastPage(),
+                    'per_page' => $results->perPage(),
+                    'total' => $results->total(),
+                ],
             ]);
         } catch (Exception $e) {
             return response()->json([

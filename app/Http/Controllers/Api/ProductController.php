@@ -27,17 +27,23 @@ class ProductController extends Controller
                 ], 422);
             }
 
-            $query = Product::with('category')->where('stock', '>', 0);
+            $query = Product::with(['category', 'images'])->where('stock', '>', 0);
 
             if ($request->category_id) {
                 $query->where('category_id', $request->category_id);
             }
 
-            $products = $query->get(['id', 'name', 'description', 'price', 'stock', 'image_path', 'category_id']);
+            $products = $query->latest()->paginate($request->get('per_page', 12));
 
             return response()->json([
                 'success' => true,
-                'data' => $products,
+                'data' => $products->items(),
+                'meta' => [
+                    'current_page' => $products->currentPage(),
+                    'last_page' => $products->lastPage(),
+                    'per_page' => $products->perPage(),
+                    'total' => $products->total(),
+                ],
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -53,7 +59,7 @@ class ProductController extends Controller
         try {
             $product = product::with('category')->find($id);
 
-            if (!$product) {
+            if (! $product) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Produit non trouvé.',

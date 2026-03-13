@@ -367,6 +367,13 @@
         <div class="row" id="product-list">
             <!-- Produits chargés dynamiquement -->
         </div>
+        
+        <!-- Pagination -->
+        <div class="row mt-5">
+            <div class="col-12 d-flex justify-content-center" id="pagination-container">
+                <!-- Pagination dynamique -->
+            </div>
+        </div>
     </div>
 </div>
 
@@ -376,10 +383,13 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('product-list');
+    const paginationContainer = document.getElementById('pagination-container');
     const searchInput = document.getElementById('search-input');
     const categorySelect = document.getElementById('category-select');
     const currencySelect = document.getElementById('currency-select');
     const resetBtn = document.getElementById('reset-filters');
+
+    let currentPage = 1;
 
     const params = new URLSearchParams(window.location.search);
     const categoryId = params.get('category_id');
@@ -396,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('input', () => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
+            currentPage = 1;
             const q = searchInput.value.trim();
             const cat = categorySelect.value || '';
             updateQueryParams(q, cat);
@@ -404,6 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     categorySelect.addEventListener('change', () => {
+        currentPage = 1;
         const q = searchInput.value.trim();
         const cat = categorySelect.value || '';
         updateQueryParams(q, cat);
@@ -411,6 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     resetBtn.addEventListener('click', () => {
+        currentPage = 1;
         searchInput.value = '';
         categorySelect.value = '';
         TARGET_CURRENCY = 'XOF';
@@ -434,13 +447,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    async function loadProducts(categoryId, query) {
+    async function loadProducts(categoryId, query, page = 1) {
         const useSearch = (query && query.length > 0) || (categoryId && categoryId.length > 0);
-        const url = useSearch
-            ? `/api/v1/search${buildQuery({ input: query || '', category_id: categoryId || '' })}`
-            : `/api/v1/products`;
+        const baseUrl = useSearch ? `/api/v1/search` : `/api/v1/products`;
+        const url = `${baseUrl}${buildQuery({ input: query || '', category_id: categoryId || '', page: page })}`;
 
         container.innerHTML = '<div class="col-12 text-center py-5">Chargement des produits...</div>';
+        paginationContainer.innerHTML = '';
 
         try {
             const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
@@ -451,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             let products = json.data || [];
-            products = products.filter(p => Number(p.stock) > 0);
+            // products = products.filter(p => Number(p.stock) > 0); // L'API le fait déjà maintenant
 
             if (!products.length) {
                 container.innerHTML = '<div class="col-12 text-center py-5">Aucun produit trouvé pour cette catégorie.</div>';
@@ -459,11 +472,43 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             container.innerHTML = products.map(p => renderProductCard(p)).join('');
-            attachAddToCart();
+            renderPagination(json.meta);
         } catch (e) {
             container.innerHTML = `<div class="col-12 text-center text-danger py-5">Erreur: ${e.message}</div>`;
         }
     }
+
+    function renderPagination(meta) {
+        if (!meta || meta.last_page <= 1) return;
+
+        let html = '<nav><ul class="pagination">';
+        
+        // Précédent
+        html += `<li class="page-item ${meta.current_page === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${meta.current_page - 1})">Précédent</a>
+                </li>`;
+
+        for (let i = 1; i <= meta.last_page; i++) {
+            html += `<li class="page-item ${meta.current_page === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>`;
+        }
+
+        // Suivant
+        html += `<li class="page-item ${meta.current_page === meta.last_page ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${meta.current_page + 1})">Suivant</a>
+                </li>`;
+
+        html += '</ul></nav>';
+        paginationContainer.innerHTML = html;
+    }
+
+    window.changePage = (page) => {
+        event.preventDefault();
+        currentPage = page;
+        loadProducts(categorySelect.value || null, searchInput.value.trim(), page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     async function loadCategories(selectedId) {
         try {
@@ -535,59 +580,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return formatCurrency(converted, TARGET_CURRENCY);
     }
 
-    const CART_KEY = 'df_cart';
-
-    function getCart() {
-        try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch { return []; }
-    }
-
-    function saveCart(items) {
-        localStorage.setItem(CART_KEY, JSON.stringify(items));
-    }
-
-    function addToCart(product) {
-        const cart = getCart();
-        const idx = cart.findIndex(i => i.product_id === product.product_id);
-        if (idx >= 0) {
-            cart[idx].quantity += product.quantity;
-        } else {
-            cart.push(product);
-        }
-        saveCart(cart);
-        if (window.dfUpdateCartBadge) window.dfUpdateCartBadge();
-    }
-
-    function attachAddToCart() {
-        document.querySelectorAll('.product-item').forEach(el => {
-            el.addEventListener('click', (ev) => {
-                ev.preventDefault();
-                const d = el.dataset;
-                addToCart({
-                    product_id: Number(d.id),
-                    name: d.name || '',
-                    price: Number(d.price) || 0,
-                    image: d.image || '',
-                    quantity: 1
-                });
-                window.location = '{{ route('cart') }}';
-            });
-        });
-    }
-
     function renderProductCard(p) {
         const defaultImage = '{{ asset('assets/images/product-3.png') }}';
-        const imgSrc = (p.image_path && typeof p.image_path === 'string') ? p.image_path : defaultImage;
+        const imgSrc = (p.image_path && typeof p.image_path === 'string') ? 
+            (p.image_path.startsWith('http') ? p.image_path : `/${p.image_path.replace(/^\//, '')}`) : 
+            defaultImage;
 
         return `
             <div class="col-12 col-md-4 col-lg-3 mb-5">
-                <a class="product-item" href="{{ route('cart') }}" data-id="${p.id}" data-name="${escapeHtml(p.name || '')}" data-price="${p.price}" data-image="${imgSrc}">
+                <a class="product-item" href="/product/${p.id}">
                     <img src="${imgSrc}" class="img-fluid product-thumbnail" alt="${escapeHtml(p.name || 'Produit')}">
                     <h3 class="product-title">${escapeHtml(p.name || '')}</h3>
                     <strong class="product-price">${formatProductPrice(p.price)}</strong>
                     <span class="icon-cross">
-                        <img src="{{ asset('assets/images/cross.svg') }}" class="img-fluid" alt="Ajouter au panier">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </span>
-                    <span class="stock-badge">EN STOCK</span>
+                    <span class="stock-badge">${p.stock > 0 ? 'EN STOCK' : 'RUPTURE'}</span>
                 </a>
             </div>
         `;
