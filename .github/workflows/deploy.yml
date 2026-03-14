@@ -16,10 +16,9 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.173.212.204.129 }}
+          host: ${{ secrets.SERVER_IP }}
           username: root
-          key: ${{ secrets.ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDi9QlWQW+N9ZlDZAs6hC0iBGXQpCNAttKYH56l8WE5 root@vmi3140266
- }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/kiznet_ecommerce
             git pull origin main
