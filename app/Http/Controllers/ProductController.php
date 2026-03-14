@@ -176,7 +176,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = product::findOrFail($id);
+        $product = Product::findOrFail($id);
         $product->delete();
 
         return redirect()
@@ -186,9 +186,9 @@ class ProductController extends Controller
 
     public function randomProduit()
     {
-        $products = product::with('category')->latest()->limit(8)->get();
-        $bestSellers = product::with('category')->inRandomOrder()->limit(4)->get();
-        $categories = category::withCount('products')->get();
+        $products = Product::with('category')->latest()->limit(8)->get();
+        $bestSellers = Product::with('category')->inRandomOrder()->limit(4)->get();
+        $categories = Category::withCount('products')->get();
         $testimonials = Testimonial::latest()->get();
 
         return view('home', compact('products', 'bestSellers', 'categories', 'testimonials'));

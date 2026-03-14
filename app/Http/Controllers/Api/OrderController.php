@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\order;
-use App\Models\orderItem;
-use App\Models\product;
-use Exception;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmation;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -64,7 +64,7 @@ class OrderController extends Controller
                 $total += $product->price * $item['quantity'];
             }
 
-            $order = order::create([
+            $order = Order::create([
                 'customer_name' => $request->customer_name,
                 'customer_phone' => $request->customer_phone,
                 'customer_email' => $request->customer_email,
@@ -75,8 +75,8 @@ class OrderController extends Controller
             ]);
 
             foreach ($items as $item) {
-                $product = product::find($item['product_id']);
-                $orderItem = new orderItem([
+                $product = Product::find($item['product_id']);
+                $orderItem = new OrderItem([
                     'order_id' => $order->id,
                     'product_id' => $product->id,
                     'quantity' => $item['quantity'],

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\category;
+use App\Models\Category;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $categories = category::withCount('products')->get(['id', 'name', 'description']);
+            $categories = Category::withCount('products')->get(['id', 'name', 'description']);
 
             return response()->json([
                 'success' => true,

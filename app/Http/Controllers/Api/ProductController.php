@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\product;
+use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -57,7 +57,7 @@ class ProductController extends Controller
     public function show($id): JsonResponse
     {
         try {
-            $product = product::with('category')->find($id);
+            $product = Product::with('category')->find($id);
 
             if (! $product) {
                 return response()->json([

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\category;
+use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -38,7 +38,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $data) {
-            category::create($data);
+            Category::create($data);
         }
     }
 }

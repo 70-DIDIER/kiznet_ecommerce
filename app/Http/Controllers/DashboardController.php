@@ -56,12 +56,12 @@ class DashboardController extends Controller
             });
         $chartLabels = $months->map(function ($d) { return $d->format('M Y'); });
         $chartRevenue = $months->map(function ($d) {
-            return (float) order::where('status', 'delivered')
+            return (float) Order::where('status', 'delivered')
                 ->whereBetween('created_at', [$d, (clone $d)->endOfMonth()])
                 ->sum('total');
         });
         $chartOrders = $months->map(function ($d) {
-            return (int) order::whereBetween('created_at', [$d, (clone $d)->endOfMonth()])->count();
+            return (int) Order::whereBetween('created_at', [$d, (clone $d)->endOfMonth()])->count();
         });
 
         return view('admin.pages.dashboard', compact(

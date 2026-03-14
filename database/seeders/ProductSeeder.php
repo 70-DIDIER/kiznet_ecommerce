@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\category;
-use App\Models\product;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         //
-        $categories = category::all();
+        $categories = Category::all();
 
         $products = [
             [
@@ -61,7 +61,7 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $data) {
-            product::create($data);
+            Product::create($data);
         }
     }
 }
