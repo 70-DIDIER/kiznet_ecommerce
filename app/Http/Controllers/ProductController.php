@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\category;
-use App\Models\product;
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\Testimonial;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -17,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = product::with('category')
+        $products = Product::with('category')
             ->latest()
             ->paginate(12);
 
@@ -29,7 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = category::orderBy('name')->get(['id', 'name']);
+        $categories = Category::orderBy('name')->get(['id', 'name']);
 
         return view('admin.products.create', compact('categories'));
     }
@@ -57,7 +58,7 @@ class ProductController extends Controller
             $validated['image_path'] = (string) $request->input('image_path');
         }
 
-        $product = product::create($validated);
+        $product = Product::create($validated);
 
         // Gestion des images supplémentaires
         if ($request->hasFile('images')) {
@@ -80,15 +81,15 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = product::with(['category', 'images'])->findOrFail($id);
+        $product = Product::with(['category', 'images'])->findOrFail($id);
 
         return view('admin.products.show', compact('product'));
     }
 
     public function publicShow(string $id)
     {
-        $product = product::with(['category', 'images'])->findOrFail($id);
-        $relatedProducts = product::where('category_id', $product->category_id)
+        $product = Product::with(['category', 'images'])->findOrFail($id);
+        $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->limit(4)
             ->get();
@@ -101,8 +102,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = product::findOrFail($id);
-        $categories = category::orderBy('name')->get(['id', 'name']);
+        $product = Product::findOrFail($id);
+        $categories = Category::orderBy('name')->get(['id', 'name']);
 
         return view('admin.products.edit', compact('product', 'categories'));
     }
@@ -112,7 +113,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         $validated = $request->validate([
             'name' => [

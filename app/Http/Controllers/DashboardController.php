@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\order;
-use App\Models\orderItem;
-use App\Models\product;
-use App\Models\category;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\Category;
 use App\Models\Subscriber;
 use App\Models\Testimonial;
 use Illuminate\Support\Carbon;
@@ -15,35 +15,35 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalOrders = order::count();
-        $ordersPending = order::where('status', 'pending')->count();
-        $ordersConfirmed = order::where('status', 'confirmed')->count();
-        $ordersShipped = order::where('status', 'shipped')->count();
-        $ordersDelivered = order::where('status', 'delivered')->count();
-        $ordersCancelled = order::where('status', 'cancelled')->count();
+        $totalOrders = Order::count();
+        $ordersPending = Order::where('status', 'pending')->count();
+        $ordersConfirmed = Order::where('status', 'confirmed')->count();
+        $ordersShipped = Order::where('status', 'shipped')->count();
+        $ordersDelivered = Order::where('status', 'delivered')->count();
+        $ordersCancelled = Order::where('status', 'cancelled')->count();
 
-        $revenueDelivered = order::where('status', 'delivered')->sum('total');
+        $revenueDelivered = Order::where('status', 'delivered')->sum('total');
         $now = now();
-        $revenueThisMonth = order::where('status', 'delivered')
+        $revenueThisMonth = Order::where('status', 'delivered')
             ->whereYear('created_at', $now->year)
             ->whereMonth('created_at', $now->month)
             ->sum('total');
 
-        $productsCount = product::count();
-        $categoriesCount = category::count();
+        $productsCount = Product::count();
+        $categoriesCount = Category::count();
         $subscribersCount = Subscriber::count();
         $testimonialsCount = Testimonial::count();
 
-        $recentOrders = order::latest()->limit(10)->get(['id','customer_name','total','status','created_at']);
-        $lowStockProducts = product::with('category')
+        $recentOrders = Order::latest()->limit(10)->get(['id','customer_name','total','status','created_at']);
+        $lowStockProducts = Product::with('category')
             ->orderBy('stock')
             ->limit(10)
             ->get(['id','name','stock','category_id','image_path']);
-        $topCategories = category::withCount('products')
+        $topCategories = Category::withCount('products')
             ->orderByDesc('products_count')
             ->limit(5)
             ->get(['id','name']);
-        $topOrderedProducts = orderItem::selectRaw('product_id, SUM(quantity) as qty')
+        $topOrderedProducts = OrderItem::selectRaw('product_id, SUM(quantity) as qty')
             ->groupBy('product_id')
             ->orderByDesc('qty')
             ->limit(5)

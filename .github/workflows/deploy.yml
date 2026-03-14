@@ -1,0 +1,29 @@
+name: Deploy Laravel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.173.212.204.129 }}
+          username: root
+          key: ${{ secrets.ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDi9QlWQW+N9ZlDZAs6hC0iBGXQpCNAttKYH56l8WE5 root@vmi3140266
+ }}
+          script: |
+            cd /var/www/kiznet_ecommerce
+            git pull origin main
+            composer install --no-dev
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache

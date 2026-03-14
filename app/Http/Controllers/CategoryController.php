@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\category;
+use App\Models\Category;
 use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = category::withCount('products')
+        $categories = Category::withCount('products')
             ->latest()
             ->paginate(12);
 
@@ -40,7 +40,7 @@ class CategoryController extends Controller
             'description' => ['nullable', 'string'],
         ]);
 
-        $category = category::create($validated);
+        $category = Category::create($validated);
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -60,7 +60,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = category::with('products')->findOrFail($id);
+        $category = Category::with('products')->findOrFail($id);
 
         return view('admin.categories.show', compact('category'));
     }
@@ -70,7 +70,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category = category::findOrFail($id);
+        $category = Category::findOrFail($id);
 
         return view('admin.categories.edit', compact('category'));
     }
@@ -80,7 +80,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = category::findOrFail($id);
+        $category = Category::findOrFail($id);
 
         $validated = $request->validate([
             'name' => [
@@ -102,7 +102,7 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = category::findOrFail($id);
+        $category = Category::findOrFail($id);
         $category->delete();
 
         return redirect()
