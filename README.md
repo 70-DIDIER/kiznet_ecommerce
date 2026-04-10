@@ -1,135 +1,137 @@
-NB: une fois le projet telecharger, installer les plugins composer necessaire (composer install) , il faudra faire la migration (php artisan migrate).
-ensuite faire l'insersion des données préenregistrées seedings, par (php artisan db:seed)
+# Kiznet Ecommerce
 
-compte User (role superadmin)
-pseudo: admin | password: admin1234
+A Laravel 12 e-commerce application built with modern web technologies.
 
-Documentation des API – ARCHIPEL DUTY-FREE
-Version : v1
-Base URL : https://domaine.com/api/v1
-Méthodes d’accès : Public (aucune authentification requise)
-Format des réponses : JSON
-Méthodes HTTP supportées : GET, POST
+## Tech Stack
 
-1. Récupérer toutes les catégories
-   Endpoint : GET /categories
-   Description : Retourne la liste de toutes les catégories de produits avec le nombre de produits associés.
-   {
-   "success": true,
-   "data": [
-   {
-   "id": 1,
-   "name": "Parfums",
-   "description": "Large sélection de parfums de luxe...",
-   "products_count": 8
-   },
-   {
-   "id": 2,
-   "name": "Cosmétiques",
-   "description": "Maquillage, soins et produits de beauté...",
-   "products_count": 12
-   }
-   ]
-   }
+- **Backend:** Laravel 12, PHP 8.2+
+- **Frontend:** Tailwind CSS 4, Vite
+- **API:** Laravel Sanctum 4
+- **Authorization:** Spatie Laravel Permission
+- **Testing:** PHPUnit
+- **Code Style:** Laravel Pint
 
-2. Récupérer les produits disponibles
-   Endpoint : GET /products
-   Description : Retourne tous les produits en stock (stock > 0).
-   Paramètres optionnels :
+## Requirements
 
-category_id : Filtrer par catégorie
-Exemples :
+- PHP >= 8.2
+- Composer
+- Node.js & NPM
+- SQLite, MySQL, PostgreSQL, or your preferred database
 
-GET /api/v1/products
-GET /api/v1/products?category_id=2
+## Installation
 
-{
-"success": true,
-"data": [
-{
-"id": 1,
-"name": "Chanel N°5",
-"description": "Un parfum iconique...",
-"price": 120.00,
-"stock": 50,
-"image_path": "images/products/chanel-n5.jpg",
-"category_id": 1
-}
-]
-}
+### Clone the repository
 
-3. Récupérer un produit par ID
-   Endpoint : GET /products/{id}
-   Description : Retourne les détails d’un produit spécifique + statut de disponibilité.
+```bash
+git clone <repository-url>
+cd kiznet_ecommerce
+```
 
-Exemple :
-GET /api/v1/products/1
+### Install dependencies
 
-{
-"success": true,
-"data": {
-"id": 1,
-"name": "Chanel N°5",
-"description": "Un parfum iconique...",
-"price": 120.00,
-"stock": 50,
-"image_path": "images/products/chanel-n5.jpg",
-"category_id": 1
-},
-"is_available": true
-}
+```bash
+composer install
+npm install
+```
 
-4. Rechercher des produits par nom ou catégorie
-   Endpoint : GET /search
-   Description : Recherche de produits par nom (q) et/ou par catégorie (category_id).
-   Paramètres :
+### Environment setup
 
-input (optionnel) : mot-clé dans le nom du produit
-category_id (optionnel) : ID de la catégorie
-Exemples :
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-GET /api/v1/search?input=chanel
-GET /api/v1/search?category_id=1
-GET /api/v1/search?input=mac&category_id=3
-{
-"success": true,
-"data": [
-{
-"id": 1,
-"name": "Chanel N°5",
-"price": 120.00,
-"stock": 50,
-"category_id": 1
-}
-]
-}
+Configure your database in the `.env` file:
 
-5. Créer une commande (sans compte client)
-   Endpoint : POST /orders
-   Description : Enregistre une commande client avec les produits, quantités et coordonnées.
-   Validation : Vérifie le stock avant validation.
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=kiznet_ecommerce
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-Corps de la requête (JSON)
-{
-"customer_name": "Jean Dupont",
-"customer_phone": "+2250123456789",
-"customer_email": "jean@example.com",
-"customer_address": "Abidjan, Cocody",
-"notes": "Livraison rapide s'il vous plaît",
-"items": [
-{
-"product_id": 1,
-"quantity": 2
-},
-{
-"product_id": 5,
-"quantity": 1
-}
-]
-}
+### Database migration
 
-Réponse réussie (201 Created)
-{
-"success": true,
-"message": "Commande enregistrée avec succès.",
-}
+```bash
+php artisan migrate
+```
+
+### Build assets
+
+```bash
+npm run build
+```
+
+## Development
+
+### Start development servers
+
+Run the application with concurrent server, queue, and Vite processes:
+
+```bash
+composer run dev
+```
+
+Or run individually:
+
+```bash
+php artisan serve
+npm run dev
+```
+
+### Running tests
+
+```bash
+composer run test
+```
+
+Run a specific test file:
+
+```bash
+php artisan test --compact tests/Feature/ExampleTest.php
+```
+
+## Code Formatting
+
+This project uses Laravel Pint for code formatting. Run before committing:
+
+```bash
+vendor/bin/pint --format agent
+```
+
+## Project Structure
+
+```
+├── app/
+│   ├── Http/           # Controllers, Middleware, Requests
+│   ├── Models/         # Eloquent models
+│   ├── Services/       # Business logic services
+│   └── Mail/           # Mailable classes
+├── database/
+│   ├── migrations/     # Database migrations
+│   ├── seeders/        # Database seeders
+│   └── factories/      # Model factories
+├── routes/
+│   ├── web.php         # Web routes
+│   └── api.php         # API routes
+├── resources/          # Views, JS, CSS
+├── tests/              # PHPUnit tests
+└── config/             # Configuration files
+```
+
+## Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `composer run setup` | Full project setup (install, migrate, build) |
+| `composer run dev` | Start development servers |
+| `composer run test` | Run all tests |
+| `php artisan serve` | Start PHP server |
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Build production assets |
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
