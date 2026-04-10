@@ -1,13 +1,13 @@
 <!-- Start Footer Section -->
 <style>
     :root {
-        --primary: #0a0f1e;
-        --accent: #00d4ff;
-        --accent2: #ff6b2b;
-        --surface: #111827;
-        --surface2: #1e2a3a;
-        --text: #e2e8f0;
-        --text-muted: #94a3b8;
+        --primary: #0d1117;
+        --accent: #4F90F0;
+        --accent2: #F97316;
+        --surface: #161b27;
+        --surface2: #1e2537;
+        --text: #E5E7EB;
+        --text-muted: #9CA3AF;
     }
 
     /* ============================================
@@ -31,18 +31,9 @@
         background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
     }
 
-    /* Watermark décoratif */
+    /* Watermark supprimé */
     .footer-section::after {
-        content: 'KIZNET';
-        position: absolute;
-        bottom: -20px;
-        right: 40px;
-        font-family: 'Space Mono', monospace;
-        font-size: 7rem;
-        font-weight: 700;
-        color: rgba(0,212,255,0.025);
-        pointer-events: none;
-        letter-spacing: -0.04em;
+        display: none;
     }
 
     /* ============================================
@@ -159,13 +150,12 @@
 
     /* Titres colonnes */
     .footer-section .links-wrap h5 {
-        font-family: 'Space Mono', monospace !important;
-        font-size: 0.72rem !important;
-        letter-spacing: 0.1em !important;
+        font-size: 0.78rem !important;
+        letter-spacing: 0.06em !important;
         text-transform: uppercase;
-        color: var(--text) !important;
+        color: rgba(255,255,255,0.5) !important;
         margin-bottom: 16px !important;
-        font-weight: 400 !important;
+        font-weight: 600 !important;
     }
 
     /* Liens */
@@ -216,9 +206,8 @@
     .footer-section .custom-social li a:hover {
         background: var(--accent);
         border-color: var(--accent);
-        color: var(--primary) !important;
+        color: #ffffff !important;
         transform: translateY(-2px);
-        box-shadow: 0 4px 14px rgba(0,212,255,0.3);
     }
 
     .footer-section .custom-social li a span {
@@ -238,19 +227,18 @@
     }
 
     .footer-section .copyright .btn-primary {
-        background: rgba(0,212,255,0.1) !important;
-        border: 1px solid rgba(0,212,255,0.25) !important;
+        background: rgba(79,144,240,0.1) !important;
+        border: 1px solid rgba(79,144,240,0.25) !important;
         color: var(--accent) !important;
-        font-family: 'Space Mono', monospace;
-        font-size: 0.72rem;
-        letter-spacing: 0.04em;
+        font-size: 0.8rem;
+        font-weight: 500;
         border-radius: 6px;
         transition: all 0.2s;
     }
 
     .footer-section .copyright .btn-primary:hover {
         background: var(--accent) !important;
-        color: var(--primary) !important;
+        color: #ffffff !important;
     }
 
     /* Séparateur entre newsletter et colonnes */
@@ -299,22 +287,22 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="row g-3">
+                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="row g-2">
                         @csrf
-                        <div class="col-auto">
+                        <div class="col-12 col-sm-auto">
                             <input type="text" name="name"
                                 class="form-control @error('name') is-invalid @enderror"
                                 placeholder="Votre prénom"
                                 value="{{ old('name') }}" required>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-12 col-sm-auto">
                             <input type="email" name="email"
                                 class="form-control @error('email') is-invalid @enderror"
                                 placeholder="Votre adresse e-mail"
                                 value="{{ old('email') }}" required>
                         </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="col-12 col-sm-auto">
+                            <button type="submit" class="btn btn-primary w-100">
                                 <span class="fa fa-paper-plane"></span>
                             </button>
                         </div>
@@ -412,7 +400,7 @@
                     <p class="mb-2 text-center">
                         Copyright &copy;
                         <script>document.write(new Date().getFullYear());</script>
-                        <strong style="color: var(--accent); font-family: 'Space Mono', monospace;">KIZNET</strong>service
+                        <strong style="color: var(--accent); font-family: 'Inter', sans-serif;">KIZNET</strong>service
                         — Tous droits réservés.
                     </p>
                     @auth

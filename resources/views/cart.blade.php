@@ -4,17 +4,17 @@
 
 @section('content')
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --primary: #0a0f1e;
-        --accent: #00d4ff;
-        --accent2: #ff6b2b;
-        --surface: #111827;
-        --surface2: #1e2a3a;
-        --text: #e2e8f0;
-        --text-muted: #94a3b8;
+        --primary: #0d1117;
+        --accent: #4F90F0;
+        --accent2: #F97316;
+        --surface: #161b27;
+        --surface2: #1e2537;
+        --text: #E5E7EB;
+        --text-muted: #9CA3AF;
     }
 
     body {
@@ -66,12 +66,12 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         font-size: clamp(2.2rem, 4vw, 3.2rem);
-        color: #ffffff;
+        color: var(--text);
         margin-bottom: 10px;
     }
 
     .hero-breadcrumb {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.72rem;
         color: var(--text-muted);
         letter-spacing: 0.08em;
@@ -86,7 +86,7 @@
         align-items: center;
         gap: 8px;
         margin-top: 20px;
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.7rem;
     }
 
@@ -140,7 +140,7 @@
     }
 
     .site-blocks-table .table thead tr th {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.68rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -209,7 +209,7 @@
         line-height: 1;
         cursor: pointer;
         transition: background 0.2s;
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
     }
 
     .quantity-container .btn-outline-black:hover {
@@ -221,7 +221,7 @@
         border: none !important;
         color: var(--text) !important;
         text-align: center;
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.88rem;
         width: 40px;
         padding: 6px 0;
@@ -239,7 +239,7 @@
         border: 1px solid rgba(255,107,43,0.25) !important;
         color: var(--accent2) !important;
         border-radius: 6px;
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.7rem;
         padding: 5px 10px;
         transition: all 0.2s;
@@ -253,7 +253,7 @@
 
     /* Total colonne */
     .site-blocks-table .table tbody td:nth-child(5) {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.9rem;
         color: var(--accent);
         font-weight: 700;
@@ -261,7 +261,7 @@
 
     /* Prix unitaire */
     .site-blocks-table .table tbody td:nth-child(3) {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.85rem;
         color: var(--text-muted);
     }
@@ -269,7 +269,7 @@
     /* Panier vide */
     #cart-body td.text-center {
         color: var(--text-muted);
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.82rem;
         padding: 60px 20px;
     }
@@ -281,7 +281,7 @@
         background: transparent !important;
         border: 2px solid var(--accent) !important;
         color: var(--accent) !important;
-        font-family: 'Space Mono', monospace !important;
+        font-family: 'Inter', sans-serif !important;
         font-size: 0.78rem !important;
         letter-spacing: 0.04em;
         padding: 10px 20px !important;
@@ -302,7 +302,7 @@
         background: var(--accent) !important;
         border: 2px solid var(--accent) !important;
         color: var(--primary) !important;
-        font-family: 'Space Mono', monospace !important;
+        font-family: 'Inter', sans-serif !important;
         font-size: 0.82rem !important;
         font-weight: 700 !important;
         letter-spacing: 0.04em;
@@ -341,16 +341,70 @@
     .cart-note p strong {
         color: var(--accent);
     }
+
+    /* ============================================
+       MOBILE
+    ============================================ */
+    @media (max-width: 768px) {
+        .untree_co-section { padding: 40px 0 !important; }
+
+        /* Steps : compacter */
+        .checkout-steps { gap: 5px; margin-top: 12px; flex-wrap: wrap; }
+        .checkout-steps .step { padding: 3px 8px; font-size: 0.65rem; }
+
+        /* Table → scroll horizontal */
+        .site-blocks-table { overflow-x: auto; border-radius: 12px; }
+        .site-blocks-table .table tbody td { padding: 12px 10px; }
+        .site-blocks-table .table thead tr th { padding: 12px 10px; }
+
+        /* Contrôles quantité */
+        .quantity-container { max-width: 110px !important; }
+
+        /* Boutons bas de page */
+        .row .col-md-6.text-start,
+        .row .col-md-6.text-end { flex: 0 0 100% !important; max-width: 100% !important; text-align: center !important; }
+        .row .col-md-6.text-end { margin-top: 10px; }
+    }
+
+    @media (max-width: 576px) {
+        /* Masquer la colonne image sur très petit écran */
+        .site-blocks-table .table thead th:first-child,
+        .site-blocks-table .table tbody td:first-child { display: none !important; }
+
+        .site-blocks-table .table tbody td { padding: 10px 8px; font-size: 0.82rem; }
+    }
+
+    /* ============================================
+       LIGHT THEME OVERRIDES
+    ============================================ */
+    html[data-theme="light"] .hero {
+        padding-top: 180px !important;
+    }
+
+    html[data-theme="light"] .hero::before {
+        background: linear-gradient(135deg, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.72) 55%, rgba(37, 99, 235, 0.05) 100%) !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt h1 {
+        color: #FFFFFF !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb {
+        color: rgba(255,255,255,0.7) !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb span {
+        color: #60A5FA !important;
+    }
 </style>
 
 <!-- Start Hero Section -->
-<div class="hero"
+<div class="hero hero-img"
     style="background: url('{{ asset('assets/images/front-view-cyber-monday-composition.jpg') }}') no-repeat center center !important;
     background-size: cover !important;
-    padding: 120px 0 !important;
-    min-height: 380px !important;
-    height: 380px !important;
-    max-height: 380px !important;">
+    padding: 155px 0 50px !important;
+    min-height: 360px !important;">
 
     <div class="hero-grid"></div>
     <div class="container">
@@ -369,7 +423,7 @@
                 </div>
             </div>
             <div class="col-lg-4 d-none d-lg-flex justify-content-end">
-                <div style="font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; line-height: 2.2; text-align: right;">
+                <div style="font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; line-height: 2.2; text-align: right;">
                     <div>✔ &nbsp;Paiement à la livraison</div>
                     <div>✔ &nbsp;Zéro avance requise</div>
                     <div>✔ &nbsp;Expédié depuis l'Europe</div>

@@ -4,21 +4,21 @@
 
 @section('content')
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --primary: #0a0f1e;
-        --accent: #00d4ff;
-        --accent2: #ff6b2b;
-        --surface: #111827;
-        --surface2: #1e2a3a;
-        --text: #e2e8f0;
-        --text-muted: #94a3b8;
+        --primary: #0d1117;
+        --accent: #4F90F0;
+        --accent2: #F97316;
+        --surface: #161b27;
+        --surface2: #1e2537;
+        --text: #E5E7EB;
+        --text-muted: #9CA3AF;
     }
 
     body {
-        font-family: 'DM Sans', sans-serif;
+        font-family: 'Inter', 'DM Sans', sans-serif;
         background: var(--primary);
         color: var(--text);
     }
@@ -45,24 +45,14 @@
         content: '';
         position: absolute;
         inset: 0;
-        background:
-            radial-gradient(ellipse at 60% 50%, rgba(0, 212, 255, 0.07) 0%, transparent 60%),
-            radial-gradient(ellipse at 10% 80%, rgba(255, 107, 43, 0.05) 0%, transparent 50%);
+        background: radial-gradient(ellipse at 60% 40%, rgba(79, 144, 240, 0.06) 0%, transparent 60%);
         pointer-events: none;
         z-index: 1;
     }
 
-    /* Grille décorative */
+    /* Grille décorative supprimée */
     .hero-grid {
-        position: absolute;
-        inset: 0;
-        background-image:
-            linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
-        background-size: 60px 60px;
-        mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
-        pointer-events: none;
-        z-index: 0;
+        display: none;
     }
 
     .hero .container {
@@ -74,21 +64,27 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         font-size: clamp(2.2rem, 4vw, 3.5rem);
-        color: #ffffff;
+        color: var(--text);
         margin: 0;
     }
 
     .hero .intro-excerpt h1 span.accent {
         color: var(--accent);
-        font-family: 'Space Mono', monospace;
+    }
+
+    .hero-sub-p {
+        color: var(--text-muted);
+    }
+
+    .hero-checklist {
+        color: var(--text-muted);
     }
 
     .hero-breadcrumb {
-        font-family: 'Space Mono', monospace;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: var(--text-muted);
-        letter-spacing: 0.08em;
         margin-bottom: 16px;
+        font-weight: 500;
     }
 
     .hero-breadcrumb span {
@@ -139,29 +135,28 @@
     /* Bouton reset */
     #reset-filters {
         background: transparent;
-        border: 1px solid rgba(255, 107, 43, 0.4);
+        border: 1px solid rgba(255, 107, 43, 0.35);
         color: var(--accent2);
-        font-family: 'Space Mono', monospace;
-        font-size: 0.75rem;
-        letter-spacing: 0.04em;
+        font-size: 0.85rem;
+        font-weight: 500;
         border-radius: 8px;
         padding: 10px 14px;
-        transition: all 0.25s ease;
+        transition: all 0.2s ease;
     }
 
     #reset-filters:hover {
         background: var(--accent2);
-        color: #fff;
+        color: var(--text);
         border-color: var(--accent2);
     }
 
     /* Label "Rechercher" discret */
     .filter-label {
-        font-family: 'Space Mono', monospace;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         color: var(--text-muted);
-        letter-spacing: 0.08em;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 0.05em;
         margin-bottom: 6px;
         display: block;
     }
@@ -177,7 +172,7 @@
     /* Chargement */
     #product-list .col-12.text-center {
         color: var(--text-muted);
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.85rem;
     }
 
@@ -196,23 +191,13 @@
     }
 
     .product-item::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, var(--accent), var(--accent2));
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
+        display: none;
     }
 
     .product-item:hover {
-        border-color: rgba(0, 212, 255, 0.2);
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.08);
-    }
-
-    .product-item:hover::before {
-        transform: scaleX(1);
+        border-color: rgba(79, 144, 240, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
 
     .product-thumbnail {
@@ -237,18 +222,18 @@
         font-family: 'DM Sans', sans-serif !important;
         font-size: 0.88rem !important;
         font-weight: 600 !important;
-        color: #e2e8f0 !important;
+        color: var(--text) !important;
         margin-top: 14px !important;
         margin-bottom: 6px !important;
         line-height: 1.4 !important;
     }
 
     .product-price {
-        font-family: 'Space Mono', monospace !important;
         font-size: 1rem !important;
-        color: #00d4ff !important;
+        color: var(--accent) !important;
         font-weight: 700 !important;
         display: block !important;
+        font-variant-numeric: tabular-nums;
     }
 
     .icon-cross {
@@ -281,7 +266,7 @@
     /* Message vide / erreur */
     #product-list .text-danger {
         color: #f87171 !important;
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.85rem;
     }
 
@@ -290,7 +275,7 @@
         position: absolute;
         bottom: 14px;
         right: 14px;
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.62rem;
         background: rgba(0, 212, 255, 0.08);
         color: var(--accent);
@@ -299,14 +284,81 @@
         padding: 2px 7px;
         letter-spacing: 0.05em;
     }
+
+    /* ============================================
+       MOBILE
+    ============================================ */
+    @media (max-width: 768px) {
+        .untree_co-section { padding: 40px 0 !important; }
+
+        /* Barre de filtres : empiler les champs */
+        .filters-bar .row > [class*="col-"] {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+            margin-bottom: 8px;
+        }
+
+        /* Titre hero shop */
+        .hero .intro-excerpt h1 { font-size: clamp(1.5rem, 5vw, 2rem) !important; }
+
+        /* Checklist droite masquée (déjà d-none d-lg-block) */
+    }
+
+    @media (max-width: 576px) {
+        /* Titres produits compacts */
+        .product-item .product-title { font-size: 0.78rem !important; }
+        .product-item .product-price { font-size: 0.85rem !important; }
+        .product-item .product-thumbnail { height: 130px !important; }
+        .product-item { padding: 12px !important; }
+
+        /* Badge stock : sortir du positionnement absolu pour éviter le chevauchement avec le prix */
+        .product-item .stock-badge {
+            position: static !important;
+            display: inline-block;
+            margin-top: 6px;
+        }
+    }
+
+    /* ============================================
+       LIGHT THEME OVERRIDES
+    ============================================ */
+    html[data-theme="light"] .hero {
+        background: #F5F7FA !important;
+        padding-top: 180px !important;
+    }
+
+    html[data-theme="light"] .hero::before {
+        background: radial-gradient(ellipse at 60% 40%, rgba(37, 99, 235, 0.06) 0%, transparent 60%) !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt h1 {
+        color: #0D1117 !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt h1 span.accent {
+        color: #2563EB !important;
+    }
+
+    html[data-theme="light"] .hero-sub-p,
+    html[data-theme="light"] .hero-checklist {
+        color: #374151 !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb {
+        color: #6B7280 !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb span {
+        color: #2563EB !important;
+    }
 </style>
 
 <!-- Hero Boutique -->
 <div class="hero"
-    style="padding: 120px 0 !important;
-    min-height: 380px !important;
-    height: 380px !important;
-    max-height: 380px !important;">
+    style="padding: 155px 0 50px !important;
+    min-height: 380px !important;">
     <div class="hero-grid"></div>
     <div class="container">
         <div class="row justify-content-between align-items-center">
@@ -314,14 +366,14 @@
                 <div class="intro-excerpt">
                     {{-- <div class="hero-breadcrumb">Accueil / <span>Catalogue</span></div> --}}
                     <h1><span class="accent">KIZNET</span>Shop — Catalogue</h1>
-                    <p style="color: var(--text-muted); margin-top: 14px; font-size: 0.95rem; max-width: 460px; line-height: 1.7;">
+                    <p class="hero-sub-p" style="margin-top: 14px; font-size: 0.95rem; max-width: 460px; line-height: 1.7;">
                         Ordinateurs, composants &amp; électronique expédiés depuis l'Europe.
                         Payez uniquement à la livraison.
                     </p>
                 </div>
             </div>
             <div class="col-lg-4 text-end d-none d-lg-block">
-                <div style="font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; line-height: 2;">
+                <div class="hero-checklist" style="font-family: 'Inter', sans-serif; font-size: 0.72rem; letter-spacing: 0.06em; line-height: 2;">
                     <div>✔ &nbsp;Livraison depuis l'Europe</div>
                     <div>✔ &nbsp;Paiement à la réception</div>
                     <div>✔ &nbsp;Gros &amp; détail disponibles</div>
@@ -587,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
             defaultImage;
 
         return `
-            <div class="col-12 col-md-4 col-lg-3 mb-5">
+            <div class="col-6 col-md-4 col-lg-3 mb-5">
                 <a class="product-item" href="/product/${p.id}">
                     <img src="${imgSrc}" class="img-fluid product-thumbnail" alt="${escapeHtml(p.name || 'Produit')}">
                     <h3 class="product-title">${escapeHtml(p.name || '')}</h3>

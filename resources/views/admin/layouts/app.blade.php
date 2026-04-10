@@ -132,7 +132,13 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <a class="dropdown-item" href="{{ route('home') }}"><i class="mdi mdi-web text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Accéder au site</span></a>
-                        <a class="dropdown-item" href="{{ route('logout') }}"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                        <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="dropdown-item" style="background:none;border:none;padding:0.35rem 1rem;width:100%;text-align:left;">
+                                <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle" data-key="t-logout">Logout</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

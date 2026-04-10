@@ -3,17 +3,17 @@
 @section('title', $product->name . ' — Archipel Tech')
 
 @section('content')
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --primary: #0a0f1e;
-        --accent: #00d4ff;
-        --accent2: #ff6b2b;
-        --surface: #111827;
-        --surface2: #1e2a3a;
-        --text: #e2e8f0;
-        --text-muted: #94a3b8;
+        --primary: #0d1117;
+        --accent: #4F90F0;
+        --accent2: #F97316;
+        --surface: #161b27;
+        --surface2: #1e2537;
+        --text: #E5E7EB;
+        --text-muted: #9CA3AF;
     }
 
     body {
@@ -61,12 +61,12 @@
     .product-info h1 {
         font-weight: 700;
         font-size: 2.5rem;
-        color: #fff;
+        color: var(--text);
         margin-bottom: 10px;
     }
 
     .product-category {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         color: var(--accent);
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -74,10 +74,10 @@
     }
 
     .product-price {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 2rem;
         font-weight: 700;
-        color: #fff;
+        color: var(--text);
         margin: 20px 0;
     }
 
@@ -92,7 +92,7 @@
         background: var(--accent) !important;
         border: none !important;
         color: var(--primary) !important;
-        font-family: 'Space Mono', monospace !important;
+        font-family: 'Inter', sans-serif !important;
         font-weight: 700 !important;
         padding: 15px 40px !important;
         border-radius: 12px !important;
@@ -126,7 +126,7 @@
         height: 40px;
         border: 1px solid rgba(255,255,255,0.1);
         background: var(--surface2);
-        color: #fff;
+        color: var(--text);
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -139,9 +139,44 @@
         text-align: center;
         background: transparent;
         border: none;
-        color: #fff;
-        font-family: 'Space Mono', monospace;
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
         font-size: 1.2rem;
+    }
+
+    /* ============================================
+       MOBILE
+    ============================================ */
+    @media (max-width: 768px) {
+        .product-detail-section { padding: 100px 0 50px; }
+
+        #main-image { height: 280px; }
+
+        .product-info h1 { font-size: 1.6rem; }
+
+        .product-price { font-size: 1.5rem; margin: 14px 0; }
+
+        .product-description { font-size: 0.92rem; margin-bottom: 20px; }
+
+        .btn-add-cart { padding: 13px 24px !important; font-size: 0.92rem !important; }
+
+        .thumb-item { width: 60px; height: 60px; }
+
+        .image-gallery { padding: 14px; border-radius: 14px; }
+    }
+
+    @media (max-width: 576px) {
+        .product-detail-section { padding: 90px 0 36px; }
+
+        #main-image { height: 220px; }
+
+        .product-info h1 { font-size: 1.3rem; }
+
+        .product-price { font-size: 1.25rem; }
+
+        .quantity-control { gap: 10px; }
+
+        .btn-add-cart { width: 100% !important; }
     }
 </style>
 

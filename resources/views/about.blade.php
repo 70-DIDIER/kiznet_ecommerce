@@ -4,17 +4,17 @@
 
 @section('content')
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --primary: #0a0f1e;
-        --accent: #00d4ff;
-        --accent2: #ff6b2b;
-        --surface: #111827;
-        --surface2: #1e2a3a;
-        --text: #e2e8f0;
-        --text-muted: #94a3b8;
+        --primary: #0d1117;
+        --accent: #4F90F0;
+        --accent2: #F97316;
+        --surface: #161b27;
+        --surface2: #1e2537;
+        --text: #E5E7EB;
+        --text-muted: #9CA3AF;
     }
 
     body {
@@ -69,13 +69,13 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         font-size: clamp(2.2rem, 4vw, 3.5rem);
-        color: #ffffff;
+        color: var(--text);
         margin-bottom: 16px;
     }
 
     .hero .intro-excerpt h1 .brand {
         color: var(--accent);
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
     }
 
     .hero .intro-excerpt p {
@@ -86,7 +86,7 @@
     }
 
     .hero-breadcrumb {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.72rem;
         color: var(--text-muted);
         letter-spacing: 0.08em;
@@ -116,7 +116,7 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         font-size: 2rem;
-        color: #fff;
+        color: var(--text);
         margin-bottom: 16px;
     }
 
@@ -161,7 +161,7 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 600;
         font-size: 0.95rem;
-        color: #fff;
+        color: var(--text);
         margin-bottom: 8px;
     }
 
@@ -199,7 +199,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 10rem;
         font-weight: 700;
         color: rgba(0,212,255,0.025);
@@ -225,7 +225,7 @@
     }
 
     .mission-banner .mission-card .mission-num {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 2.5rem;
         font-weight: 700;
         color: var(--accent);
@@ -237,7 +237,7 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 600;
         font-size: 0.95rem;
-        color: #fff;
+        color: var(--text);
         margin-bottom: 8px;
     }
 
@@ -260,7 +260,7 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         font-size: 2rem;
-        color: #fff;
+        color: var(--text);
     }
 
     .testimonial-block blockquote p {
@@ -271,29 +271,80 @@
     }
 
     .testimonial-block .author-info h3 {
-        color: #fff;
+        color: var(--text);
         font-weight: 600;
     }
 
     .testimonial-block .author-info .position {
         color: var(--accent);
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.78rem;
     }
 
     .testimonial-block .author-pic img {
         border: 2px solid rgba(0,212,255,0.3) !important;
     }
+
+    /* ============================================
+       MOBILE
+    ============================================ */
+    @media (max-width: 768px) {
+        .mission-banner { padding: 40px 0 !important; }
+        .mission-card { padding: 20px 16px !important; }
+        .mission-num { font-size: clamp(1.4rem, 5vw, 2rem) !important; }
+
+        .why-choose-section { padding: 50px 0 !important; }
+        .why-choose-section .section-title { font-size: 1.4rem !important; }
+
+        .testimonial-section { padding: 50px 0 !important; }
+        .testimonial-block { padding: 20px !important; }
+    }
+
+    @media (max-width: 576px) {
+        .we-help-section .imgs-grid { display: none; }
+        .mission-card { margin-bottom: 12px; }
+    }
+
+    /* ============================================
+       LIGHT THEME OVERRIDES
+    ============================================ */
+    html[data-theme="light"] .hero {
+        padding-top: 180px !important;
+    }
+
+    html[data-theme="light"] .hero::before {
+        background: linear-gradient(135deg, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.70) 50%, rgba(37, 99, 235, 0.06) 100%) !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt h1 {
+        color: #FFFFFF !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt h1 .brand {
+        color: #2563EB !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt p {
+        color: rgba(255,255,255,0.9) !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb {
+        color: rgba(255,255,255,0.7) !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb span {
+        color: #60A5FA !important;
+    }
 </style>
 
 <!-- Start Hero Section -->
-<div class="hero"
+<div class="hero hero-img"
     style="background: url('{{ asset('assets/images/about-as-service-contact-information-concept (1).jpg') }}') no-repeat center center !important;
     background-size: cover !important;
-    padding: 120px 0 !important;
-    min-height: 500px !important;
-    height: 500px !important;
-    max-height: 500px !important;">
+    padding: 155px 0 60px !important;
+    min-height: 420px !important;">
 
     <div class="hero-grid"></div>
     <div class="container">

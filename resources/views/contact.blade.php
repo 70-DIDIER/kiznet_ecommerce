@@ -4,17 +4,17 @@
 
 @section('content')
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --primary: #0a0f1e;
-        --accent: #00d4ff;
-        --accent2: #ff6b2b;
-        --surface: #111827;
-        --surface2: #1e2a3a;
-        --text: #e2e8f0;
-        --text-muted: #94a3b8;
+        --primary: #0d1117;
+        --accent: #4F90F0;
+        --accent2: #F97316;
+        --surface: #161b27;
+        --surface2: #1e2537;
+        --text: #E5E7EB;
+        --text-muted: #9CA3AF;
     }
 
     body {
@@ -66,13 +66,13 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         font-size: clamp(2.2rem, 4vw, 3.5rem);
-        color: #ffffff;
+        color: var(--text);
         margin-bottom: 16px;
     }
 
     .hero .intro-excerpt h1 .brand {
         color: var(--accent);
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
     }
 
     .hero .intro-excerpt p {
@@ -83,7 +83,7 @@
     }
 
     .hero-breadcrumb {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.72rem;
         color: var(--text-muted);
         letter-spacing: 0.08em;
@@ -145,7 +145,7 @@
     }
 
     .service-contents p a:hover {
-        color: #fff;
+        color: var(--text);
     }
 
     /* ============================================
@@ -172,7 +172,7 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         font-size: 1.3rem;
-        color: #fff;
+        color: var(--text);
         margin-bottom: 6px;
     }
 
@@ -187,7 +187,7 @@
     }
 
     .form-group label {
-        font-family: 'Space Mono', monospace;
+        font-family: 'Inter', sans-serif;
         font-size: 0.72rem;
         letter-spacing: 0.07em;
         color: var(--text-muted) !important;
@@ -230,7 +230,7 @@
         background: transparent !important;
         border: 2px solid var(--accent) !important;
         color: var(--accent) !important;
-        font-family: 'Space Mono', monospace !important;
+        font-family: 'Inter', sans-serif !important;
         font-size: 0.82rem !important;
         letter-spacing: 0.05em;
         padding: 10px 28px !important;
@@ -281,7 +281,7 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 600;
         font-size: 1rem;
-        color: #fff;
+        color: var(--text);
     }
 
     .btn-close {
@@ -293,16 +293,68 @@
         margin-top: 16px;
         filter: invert(0.85) hue-rotate(180deg);
     }
+
+    /* ============================================
+       MOBILE
+    ============================================ */
+    @media (max-width: 768px) {
+        .untree_co-section { padding: 40px 0 !important; }
+
+        /* Card contact */
+        .contact-block { padding: 24px 16px !important; }
+
+        /* Iframe map */
+        iframe { height: 280px !important; }
+    }
+
+    @media (max-width: 576px) {
+        /* Champs prénom/nom → empilement */
+        .row-name-fields > [class*="col-"] {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+        }
+    }
+
+    /* ============================================
+       LIGHT THEME OVERRIDES
+    ============================================ */
+    html[data-theme="light"] .hero {
+        padding-top: 180px !important;
+    }
+
+    html[data-theme="light"] .hero::before {
+        background: linear-gradient(135deg, rgba(10,15,30,0.93) 0%, rgba(10,15,30,0.72) 55%, rgba(37, 99, 235, 0.05) 100%) !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt h1 {
+        color: #FFFFFF !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt h1 .brand {
+        color: #2563EB !important;
+    }
+
+    html[data-theme="light"] .hero .intro-excerpt p {
+        color: rgba(255,255,255,0.9) !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb {
+        color: rgba(255,255,255,0.7) !important;
+    }
+
+    html[data-theme="light"] .hero-breadcrumb span {
+        color: #60A5FA !important;
+    }
 </style>
 
 <!-- Start Hero Section -->
-<div class="hero"
+<div class="hero hero-img"
     style="background: url('{{ asset('assets/images/customer-service-business-contact-concept-wooden-cube-block-which-print-screen-letter-telephone-email-address-message.jpg') }}') no-repeat center center !important;
     background-size: cover !important;
-    padding: 120px 0 !important;
-    min-height: 460px !important;
-    height: 460px !important;
-    max-height: 460px !important;">
+    padding: 155px 0 60px !important;
+    min-height: 400px !important;">
 
     <div class="hero-grid"></div>
     <div class="container">

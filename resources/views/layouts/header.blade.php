@@ -4,7 +4,7 @@
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset($siteInfos['logo'] ?? 'assets/images/logov2.jpeg') }}"
-                    alt="" height="80" style="border-radius: 50%;">
+                    alt="" width="70" height="70" style="border-radius: 50%; object-fit: contain; background: #fff;">
         </a>
 
 
@@ -66,11 +66,25 @@
             </ul>
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                {{-- <li>
-                    <a class="nav-link" href="#">
-                        <img src="{{ asset('assets/images/user.svg') }}" alt="User">
-                    </a>
-                </li> --}}
+                <!-- Toggle thème -->
+                <li class="d-flex align-items-center">
+                    <button id="theme-toggle" class="theme-toggle-btn" title="Changer de thème" aria-label="Changer de thème">
+                        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+                </li>
                 <li class="position-relative">
                     <a class="nav-link" href="{{ url('cart') }}">
                         <img src="{{ asset('assets/images/cart.svg') }}" alt="Cart">
@@ -86,7 +100,9 @@
 <!-- End Header/Navigation -->
 
 <style>
-    /* Header transparent */
+    /* ============================================================
+       NAVBAR
+       ============================================================ */
     .custom-navbar {
         position: fixed !important;
         top: 0;
@@ -95,130 +111,85 @@
         width: 100%;
         background: transparent !important;
         z-index: 1000;
-        transition: all 0.3s ease;
-        padding: 20px 0;
+        transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+        padding: 10px 0;
     }
 
     .custom-navbar.scrolled {
-        transform: translateY(-100%);
-        opacity: 0;
-        pointer-events: none;
+        background: rgba(13, 17, 26, 0.96) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+        padding: 8px 0;
     }
 
-    /* Sections hero (hauteur + paramètres) */
-    .hero-section,
-    section:first-of-type,
-    .hero {
-        min-height: 100vh !important;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        background-size: cover !important;
-        background-position: center !important;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* *** Assombrissement de l'image du hero *** */
-    .hero::before,
-    .hero-section::before,
-    section:first-of-type::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0, 5);
-        /* intensité du sombre */
-        z-index: 1;
-    }
-
-    /* Textes au-dessus du sombre */
-    .hero *,
-    .hero-section *,
-    section:first-of-type * {
-        position: relative;
-        z-index: 2;
-    }
-
-    /* Logo blanc pur */
+    /* Logo */
     .navbar-brand {
         color: #ffffff !important;
-        font-weight: bold;
-        font-size: 1.8rem !important;
-        text-shadow: none !important;
+        font-weight: 700;
+        font-size: 1.6rem !important;
     }
 
     .navbar-brand span {
-        color: #f9bf29 !important;
+        color: #4F90F0 !important;
     }
 
-
-    /* ============================================================
-       MENU : blanc pur (normal) + hover & active TRÈS brillants
-       ============================================================ */
-
-    /* NORMAL = blanc pur */
+    /* Liens nav */
     .custom-navbar-nav .nav-link {
-        color: #ffffff !important;
-        opacity: 1 !important;
-        font-weight: 600 !important;
-        font-size: 1.05rem !important;
-        padding: 8px 16px !important;
-        transition: all 0.3s ease;
-        text-shadow: none !important;
+        color: rgba(255,255,255,0.75) !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+        padding: 4px 10px !important;
+        transition: color 0.2s ease;
+        position: relative;
     }
 
-    /* HOVER = doré + glow accentué */
+    /* Neutralise le ::before du template (barre orange style.css) */
+    .custom-navbar .custom-navbar-nav li a::before {
+        display: none !important;
+    }
+
+    .custom-navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 14px;
+        right: 14px;
+        height: 2px;
+        background: #4F90F0;
+        transform: scaleX(0);
+        transition: transform 0.2s ease;
+        border-radius: 2px;
+    }
+
     .custom-navbar-nav .nav-link:hover {
-        color: #f9bf29 !important;
-        text-shadow:
-            0 0 10px rgba(249, 191, 41, 0.9),
-            0 0 20px rgba(249, 191, 41, 0.7),
-            0 0 35px rgba(249, 191, 41, 0.5);
-        transform: translateY(-2px);
-    }
-
-    /* ACTIVE = doré + glow puissant */
-    .custom-navbar-nav .nav-link.active {
-        color: #f9bf29 !important;
-        font-weight: 800 !important;
-        text-shadow:
-            0 0 12px rgba(249, 191, 41, 1),
-            0 0 28px rgba(249, 191, 41, 0.9),
-            0 0 50px rgba(249, 191, 41, 0.8);
-        transform: translateY(-2px);
-    }
-
-    /* Textes hero (blanc pur sans glow) */
-    .hero p,
-    .hero h1,
-    .hero h2,
-    .hero h3,
-    .hero-section p,
-    .hero-section h1,
-    .hero-section h2,
-    .hero-section h3 {
         color: #ffffff !important;
-        font-weight: 500;
-        text-shadow: none !important;
     }
 
-    .hero h1,
-    .hero-section h1 {
-        font-size: 3rem !important;
-        font-weight: 700 !important;
+    .custom-navbar-nav .nav-link:hover::after {
+        transform: scaleX(0.5);
+    }
+
+    .custom-navbar-nav .nav-link.active {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }
+
+    .custom-navbar-nav .nav-link.active::after {
+        transform: scaleX(0.7);
     }
 
     /* Icônes panier */
     .custom-navbar-cta img {
         filter: brightness(0) invert(1);
-        width: 24px;
-        height: 24px;
-        transition: all 0.3s ease;
+        opacity: 0.75;
+        width: 22px;
+        height: 22px;
+        transition: opacity 0.2s ease;
     }
 
     .custom-navbar-cta img:hover {
-        filter: brightness(1) drop-shadow(0 0 10px #f9bf29);
-        transform: scale(1.1);
+        opacity: 1;
     }
 
     .cart-badge {
@@ -226,29 +197,103 @@
         top: 0;
         right: 0;
         transform: translate(40%, -40%);
-        background: #f9bf29;
-        color: #000000;
+        background: #4F90F0;
+        color: #ffffff;
         border-radius: 9999px;
         font-weight: 700;
-        font-size: 12px;
+        font-size: 11px;
         line-height: 1;
-        padding: 2px 6px;
+        padding: 2px 5px;
         display: none;
-        min-width: 18px;
+        min-width: 17px;
         text-align: center;
     }
 
-    /* Mobile */
+    /* Tablette / Mobile */
     @media (max-width: 991px) {
+        .custom-navbar {
+            padding: 6px 0;
+        }
+
         .navbar-collapse {
-            background: rgba(0, 0, 0, 0.85);
-            padding: 20px;
-            border-radius: 8px;
+            background: rgba(13, 17, 26, 0.97);
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 8px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        html[data-theme="light"] .navbar-collapse {
+            background: rgba(255, 255, 255, 0.99) !important;
+            border-color: rgba(0, 0, 0, 0.1) !important;
         }
 
         .custom-navbar-nav .nav-link {
-            padding: 12px 20px !important;
+            padding: 10px 16px !important;
         }
+
+        .custom-navbar-nav .nav-link::after {
+            display: none;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .custom-navbar {
+            padding: 5px 0;
+        }
+
+        .custom-navbar-cta.ms-5 {
+            margin-left: 12px !important;
+        }
+    }
+
+    /* ============================================================
+       BOUTON TOGGLE THÈME
+       ============================================================ */
+    .theme-toggle-btn {
+        background: none;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 8px;
+        padding: 6px 8px;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        line-height: 1;
+    }
+
+    .theme-toggle-btn:hover {
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Icônes soleil/lune : l'une masquée selon le thème */
+    #icon-sun,
+    #icon-moon {
+        display: none;
+    }
+
+    html[data-theme="dark"] #icon-sun {
+        display: block; /* en mode sombre → montrer le soleil (pour passer au clair) */
+    }
+
+    html[data-theme="light"] #icon-moon {
+        display: block; /* en mode clair → montrer la lune (pour passer au sombre) */
+    }
+
+    /* Bouton clair en mode light */
+    html[data-theme="light"] .theme-toggle-btn {
+        border-color: rgba(0, 0, 0, 0.2);
+        color: rgba(15, 23, 42, 0.65);
+    }
+
+    html[data-theme="light"] .theme-toggle-btn:hover {
+        color: #0F172A;
+        border-color: rgba(0, 0, 0, 0.35);
+        background: rgba(0, 0, 0, 0.05);
     }
 </style>
 
@@ -266,26 +311,35 @@
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.custom-navbar');
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        // Si on scroll vers le bas et qu'on a dépassé 100px
-        if (scrollTop > 100) {
+        if (scrollTop > 60) {
             navbar.classList.add('scrolled');
         } else {
-            // Si on remonte en haut
             navbar.classList.remove('scrolled');
         }
-
-        lastScrollTop = scrollTop;
     });
 
     document.addEventListener('DOMContentLoaded', function() {
         const navbar = document.querySelector('.custom-navbar');
-
-        if (window.scrollY > 100) {
+        if (window.scrollY > 60) {
             navbar.classList.add('scrolled');
         }
         updateCartBadge();
     });
 
     window.addEventListener('storage', function(e) { if (e.key === 'df_cart') updateCartBadge(); });
+
+    /* ============================================================
+       TOGGLE THÈME CLAIR / SOMBRE
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('theme-toggle');
+        if (!btn) return;
+
+        btn.addEventListener('click', function() {
+            var current = document.documentElement.getAttribute('data-theme') || 'dark';
+            var next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('kiznet_theme', next);
+        });
+    });
 </script>

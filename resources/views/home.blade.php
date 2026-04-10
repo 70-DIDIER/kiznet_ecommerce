@@ -4,62 +4,46 @@
 
 @section('content')
 
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #0a0f1e;
-            --accent: #00d4ff;
-            --accent2: #ff6b2b;
-            --surface: #111827;
-            --surface2: #1e2a3a;
-            --text: #e2e8f0;
-            --text-muted: #94a3b8;
+            --primary: #0d1117;
+            --accent: #4F90F0;
+            --accent2: #F97316;
+            --surface: #161b27;
+            --surface2: #1e2537;
+            --text: #E5E7EB;
+            --text-muted: #9CA3AF;
         }
 
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Inter', 'DM Sans', sans-serif;
             background: var(--primary);
             color: var(--text);
         }
 
         .btn-explorer {
             background: transparent !important;
-            border: 2px solid var(--accent) !important;
+            border: 1.5px solid rgba(79, 144, 240, 0.5) !important;
             color: var(--accent) !important;
-            font-family: 'Space Mono', monospace !important;
-            font-size: 0.85rem !important;
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-explorer::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--accent);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: -1;
+            font-size: 0.9rem !important;
+            font-weight: 500 !important;
+            transition: all 0.2s ease;
+            border-radius: 8px !important;
         }
 
         .btn-explorer:hover {
-            color: var(--primary) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-        }
-
-        .btn-explorer:hover::before {
-            transform: translateX(0);
+            background: rgba(79, 144, 240, 0.1) !important;
+            border-color: var(--accent) !important;
+            transform: translateY(-1px);
         }
 
         /* ============================================
                            HERO SECTION
                            ============================================ */
         .hero {
-            background: linear-gradient(135deg, #0a0f1e 0%, #0d1b35 40%, #0a1628 100%) !important;
+            background: var(--primary) !important;
             position: relative;
             overflow: hidden;
             min-height: 90vh;
@@ -70,33 +54,20 @@
         .hero::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 70% 50%, rgba(0, 212, 255, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 20% 80%, rgba(255, 107, 43, 0.06) 0%, transparent 50%);
+            top: 0; right: 0;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(ellipse at 80% 40%, rgba(79,144,240,0.07) 0%, transparent 65%);
             pointer-events: none;
         }
 
         .hero::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0;
-            width: 55%;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300d4ff' stop-opacity='0.05'/%3E%3Cstop offset='100%25' stop-color='%230a0f1e' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='600' height='600'/%3E%3C/svg%3E") no-repeat center;
-            background-size: cover;
+            display: none;
         }
 
-        /* Grid décoratif en arrière-plan */
+        /* Grille décorative supprimée */
         .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-            pointer-events: none;
+            display: none;
         }
 
         .hero .intro-excerpt h1 {
@@ -104,19 +75,20 @@
             font-weight: 700;
             font-size: clamp(2rem, 4vw, 3.2rem);
             line-height: 1.15;
-            color: #ffffff;
+            color: var(--text);
             position: relative;
         }
 
         .hero .intro-excerpt h1 .accent-word {
             color: var(--accent);
-            font-family: 'Space Mono', monospace;
         }
 
-        .hero .intro-excerpt h1 span {
+        .hero .intro-excerpt h1 span,
+        .hero-subtitle-tag {
             color: var(--text-muted);
-            font-size: 0.75em;
+            font-size: 0.7em;
             font-weight: 300;
+            letter-spacing: 0.01em;
         }
 
         .hero .intro-excerpt p {
@@ -126,31 +98,29 @@
             max-width: 480px;
         }
 
-        /* Badge "Livraison depuis l'Europe" */
+        /* Badge hero */
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.25);
+            background: rgba(79, 144, 240, 0.1);
+            border: 1px solid rgba(79, 144, 240, 0.2);
             color: var(--accent);
-            padding: 6px 14px;
+            padding: 5px 14px;
             border-radius: 100px;
-            font-size: 0.78rem;
-            font-family: 'Space Mono', monospace;
-            letter-spacing: 0.05em;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
             margin-bottom: 20px;
         }
 
         .hero-badge::before {
-            content: '▶';
-            font-size: 0.6em;
-            animation: pulse-dot 2s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.8;
         }
 
         /* Stats rapides dans le hero */
@@ -159,14 +129,14 @@
             gap: 32px;
             margin-top: 32px;
             padding-top: 24px;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(255,255,255,0.07);
         }
 
         .hero-stat-item .stat-num {
-            font-family: 'Space Mono', monospace;
             font-size: 1.4rem;
-            color: var(--accent);
+            color: var(--text);
             font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .hero-stat-item .stat-label {
@@ -185,23 +155,14 @@
         }
 
         .product-section::before {
-            content: 'TECH';
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            font-family: 'Space Mono', monospace;
-            font-size: 8rem;
-            color: rgba(0, 212, 255, 0.03);
-            font-weight: 700;
-            pointer-events: none;
-            letter-spacing: -0.05em;
+            display: none;
         }
 
         .product-section .section-title {
             font-family: 'DM Sans', sans-serif;
             font-weight: 700;
             font-size: 1.6rem;
-            color: #fff;
+            color: var(--text);
             line-height: 1.3;
         }
 
@@ -225,23 +186,13 @@
         }
 
         .product-item::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            display: none;
         }
 
         .product-item:hover {
-            border-color: rgba(0, 212, 255, 0.2);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.1);
-        }
-
-        .product-item:hover::before {
-            transform: scaleX(1);
+            border-color: rgba(79, 144, 240, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
         .product-item .product-thumbnail {
@@ -260,17 +211,17 @@
             font-family: 'DM Sans', sans-serif !important;
             font-size: 0.9rem !important;
             font-weight: 600 !important;
-            color: #e2e8f0 !important;
+            color: var(--text) !important;
             margin-top: 12px !important;
             margin-bottom: 6px !important;
         }
 
         .product-item .product-price {
-            font-family: 'Space Mono', monospace !important;
             font-size: 1rem !important;
-            color: #00d4ff !important;
             font-weight: 700 !important;
+            color: var(--accent) !important;
             display: block !important;
+            font-variant-numeric: tabular-nums;
         }
 
         .product-item .icon-cross {
@@ -306,7 +257,7 @@
             color: var(--text);
             border-radius: 8px;
             padding: 8px 12px;
-            font-family: 'Space Mono', monospace;
+            font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
         }
 
@@ -326,18 +277,14 @@
         }
 
         .why-choose-section::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+            display: none;
         }
 
         .why-choose-section .section-title {
             font-family: 'DM Sans', sans-serif;
             font-weight: 700;
             font-size: 2rem;
-            color: #fff;
+            color: var(--text);
         }
 
         .why-choose-section > .container > .row > .col-lg-6 > p {
@@ -377,7 +324,7 @@
             font-family: 'DM Sans', sans-serif;
             font-weight: 600;
             font-size: 0.95rem;
-            color: #fff;
+            color: var(--text);
             margin-bottom: 8px;
         }
 
@@ -400,7 +347,7 @@
             font-family: 'DM Sans', sans-serif;
             font-weight: 700;
             font-size: 2rem;
-            color: #fff;
+            color: var(--text);
         }
 
         .we-help-section p {
@@ -417,11 +364,12 @@
         }
 
         .we-help-section .custom-list li::before {
-            content: '→';
+            content: '✓';
             position: absolute;
             left: 0;
             color: var(--accent);
-            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85em;
         }
 
         .we-help-section .imgs-grid .grid img {
@@ -446,7 +394,7 @@
             font-family: 'DM Sans', sans-serif;
             font-weight: 700;
             font-size: 2rem;
-            color: #fff;
+            color: var(--text);
         }
 
         .testimonial-block blockquote p {
@@ -457,101 +405,102 @@
         }
 
         .testimonial-block .author-info h3 {
-            color: #fff;
+            color: var(--text);
             font-weight: 600;
         }
 
         .testimonial-block .author-info .position {
             color: var(--accent);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.78rem;
-        }
-
-        /* ============================================
-                           SCROLL TO TOP
-                           ============================================ */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 56px;
-            height: 56px;
-            background: var(--surface2);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .scroll-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-to-top:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(0, 212, 255, 0.35);
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .scroll-to-top:hover .scroll-icon {
-            color: var(--primary);
-        }
-
-        .scroll-to-top:active {
-            transform: scale(0.95);
-        }
-
-        .scroll-icon {
-            position: absolute;
-            color: var(--accent);
-            font-size: 18px;
-            z-index: 2;
-            animation: bounceUp 2s infinite;
-            transition: color 0.2s;
-        }
-
-        .progress-ring {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.1s;
-            stroke-linecap: round;
-        }
-
-        @keyframes bounceUp {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+            font-size: 0.8rem;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
-            .scroll-to-top {
-                width: 48px;
-                height: 48px;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .progress-ring {
-                width: 48px;
-                height: 48px;
-            }
-
             .hero-stats {
-                flex-wrap: wrap;
-                gap: 20px;
+                gap: 0;
+                justify-content: space-between;
+            }
+
+            .hero-stat-item {
+                flex: 1;
+                text-align: center;
+                padding: 0 8px;
+            }
+
+            .hero-stat-item + .hero-stat-item {
+                border-left: 1px solid rgba(255,255,255,0.07);
+            }
+
+            .hero-stat-item .stat-num {
+                font-size: 1.1rem !important;
+            }
+
+            .hero-stat-item .stat-label {
+                font-size: 0.65rem !important;
+            }
+
+            .hero .intro-excerpt p {
+                font-size: 0.92rem !important;
+            }
+
+            /* Carousel hero : pleine largeur + compact sur mobile */
+            .hero-carousel-container { margin-top: 36px; }
+
+            .hero-carousel-card { padding: 20px !important; }
+
+            .hero-carousel-card img { height: 160px !important; margin-bottom: 12px !important; }
+
+            .hero-carousel-card h3 { font-size: 0.9rem !important; }
+
+            .hero-carousel-card .price { font-size: 0.95rem !important; }
+
+            .hero-carousel-nav { margin-top: 12px; }
+
+            /* Section titre */
+            .product-section .section-title,
+            .why-choose-section .section-title,
+            .we-help-section .section-title {
+                font-size: 1.4rem !important;
+            }
+
+            /* Best-sellers : cartes horizontales → empilées */
+            .product-item-horizontal .row {
+                flex-direction: row;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero .intro-excerpt h1 {
+                font-size: 1.8rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .hero-badge {
+                font-size: 0.72rem !important;
+                padding: 4px 10px !important;
+            }
+
+            /* Category cards : 2 par ligne */
+            .category-card {
+                min-height: 140px !important;
+                padding: 16px 8px !important;
+            }
+
+            .category-card h3 {
+                font-size: 0.8rem !important;
+            }
+
+            /* Product item : titre et prix compacts */
+            .product-item .product-title {
+                font-size: 0.82rem !important;
+            }
+
+            .product-item .product-price {
+                font-size: 0.88rem !important;
+            }
+
+            .product-item .product-thumbnail {
+                height: 140px !important;
             }
         }
 
@@ -559,18 +508,18 @@
         .btn-secondary {
             background: var(--accent) !important;
             border: 2px solid var(--accent) !important;
-            color: var(--primary) !important;
-            font-family: 'Space Mono', monospace !important;
-            font-weight: 700 !important;
-            font-size: 0.85rem !important;
-            letter-spacing: 0.04em;
-            transition: all 0.3s ease;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            transition: all 0.2s ease;
+            border-radius: 8px !important;
         }
 
         .btn-secondary:hover {
-            background: transparent !important;
-            color: var(--accent) !important;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            background: #3d7dd8 !important;
+            border-color: #3d7dd8 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(79, 144, 240, 0.3);
         }
 
         /* Overrides globaux */
@@ -606,23 +555,13 @@
         }
 
         .hero-product-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00d4ff, #ff6b2b);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            display: none;
         }
 
         .hero-product-card:hover {
-            border-color: rgba(0, 212, 255, 0.3);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.1);
-        }
-
-        .hero-product-card:hover::before {
-            transform: scaleX(1);
+            border-color: rgba(79, 144, 240, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         .hero-product-card img.hero-product-img {
@@ -641,7 +580,7 @@
             font-family: 'DM Sans', sans-serif !important;
             font-size: 0.78rem !important;
             font-weight: 600 !important;
-            color: #e2e8f0 !important;
+            color: var(--text) !important;
             margin: 8px 0 4px !important;
             line-height: 1.3 !important;
             white-space: nowrap;
@@ -650,11 +589,11 @@
         }
 
         .hero-product-card .hero-product-price {
-            font-family: 'Space Mono', monospace !important;
-            font-size: 0.82rem !important;
-            color: #00d4ff !important;
+            font-size: 0.85rem !important;
+            color: var(--accent) !important;
             font-weight: 700 !important;
             display: block !important;
+            font-variant-numeric: tabular-nums;
         }
 
         /* Carousel Styles */
@@ -683,9 +622,9 @@
         }
 
         .hero-carousel-card:hover {
-            border-color: rgba(0, 212, 255, 0.4);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 212, 255, 0.2);
+            border-color: rgba(79, 144, 240, 0.25);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
         }
 
         .hero-carousel-card img {
@@ -698,22 +637,22 @@
         }
 
         .hero-carousel-card:hover img {
-            transform: scale(1.1) rotate(2deg);
+            transform: scale(1.05);
         }
 
         .hero-carousel-card h3 {
             font-family: 'DM Sans', sans-serif !important;
             font-size: 1.1rem !important;
             font-weight: 700 !important;
-            color: #ffffff !important;
+            color: var(--text) !important;
             margin-bottom: 10px !important;
         }
 
         .hero-carousel-card .price {
-            font-family: 'Space Mono', monospace !important;
-            font-size: 1.2rem !important;
+            font-size: 1.15rem !important;
             color: var(--accent) !important;
             font-weight: 700 !important;
+            font-variant-numeric: tabular-nums;
         }
 
         .hero-carousel-nav {
@@ -729,7 +668,7 @@
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -744,7 +683,8 @@
         }
 
         @media (max-width: 991px) {
-            .hero-carousel-container { margin-top: 50px; }
+            .hero-carousel-container { margin-top: 40px; }
+            .hero-carousel-card img { height: 200px !important; }
         }
 
         /* N'afficher que les 4 premiers produits dans le hero */
@@ -764,19 +704,19 @@
             <div class="row justify-content-between align-items-center">
 
                 <!-- Gauche : texte -->
-                <div class="col-lg-6">
+                <div class="col-lg-6 order-2 order-lg-1">
                     <div class="intro-excerpt">
-                        <div class="hero-badge">LIVRAISON DEPUIS L'EUROPE</div>
+                        {{-- <div class="hero-badge">LIVRAISON DEPUIS L'EUROPE</div> --}}
                         <h1>
                             <span class="accent-word">KIZNET</span>Shop
-                            <span class="d-block" style="color: var(--text-muted); font-size: 0.7em; font-weight: 300; letter-spacing: 0.01em;">Commandez, recevez, payez à la livraison</span>
+                            <span class="d-block hero-subtitle-tag">Commandez, recevez, payez à la livraison</span>
                         </h1>
                         <p class="mb-4">
                             L'excellence technologique européenne à votre portée. Trouvez les meilleurs ordinateurs et composants avec une garantie de qualité et un paiement sécurisé à la réception.
                         </p>
                         <div class="d-flex gap-3 mb-5">
                             <a href="{{ route('shop') }}" class="btn btn-secondary px-4 py-3"
-                                style="font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.85rem;">
+                                style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.85rem;">
                                 Voir le catalogue →
                             </a>
                             <a href="#categories" class="btn btn-explorer px-4 py-3">Explorer par catégorie</a>
@@ -799,13 +739,13 @@
                 </div>
 
                 <!-- Droite : Carousel de produits dynamique -->
-                <div class="col-lg-5 col-xl-5 offset-xl-1 d-none d-lg-block hero-carousel-container">
+                <div class="col-12 col-lg-5 col-xl-5 offset-xl-1 hero-carousel-container order-1 order-lg-2">
                     <div class="hero-carousel-wrap">
                         <div class="hero-carousel">
                             @foreach ($bestSellers as $product)
                                 <div class="item">
                                     <a href="{{ route('product.show', $product->id) }}" class="hero-carousel-card">
-                                        {{-- <div class="badge-featured" style="position: absolute; top: 20px; right: 20px; background: var(--accent); color: var(--primary); padding: 5px 15px; border-radius: 100px; font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; z-index: 2;">
+                                        {{-- <div class="badge-featured" style="position: absolute; top: 20px; right: 20px; background: var(--accent); color: var(--primary); padding: 5px 15px; border-radius: 100px; font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; z-index: 2;">
                                             BEST SELLER
                                         </div> --}}
                                         <img src="{{ Str::startsWith($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}" 
@@ -873,7 +813,7 @@
 
             <div class="row g-4">
                 @foreach ($products as $product)
-                    <div class="col-12 col-md-4 col-lg-3">
+                    <div class="col-6 col-md-4 col-lg-3">
                         <a class="product-item" href="{{ route('product.show', $product->id) }}" 
                            data-id="{{ $product->id }}" 
                            data-name="{{ $product->name }}" 
@@ -926,7 +866,7 @@
                                     <h4 class="h6 text-white mb-1" style="font-size: 0.85rem; line-height: 1.3; min-height: 2.6em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                         {{ $product->name }}
                                     </h4>
-                                    <strong class="text-accent d-block mb-2" style="color: var(--accent); font-family: 'Space Mono', monospace; font-size: 0.9rem;">
+                                    <strong class="text-accent d-block mb-2" style="color: var(--accent); font-family: 'Inter', sans-serif; font-size: 0.9rem;">
                                         {{ number_format($product->price, 0, ',', ' ') }} F CFA
                                     </strong>
                                     <div>

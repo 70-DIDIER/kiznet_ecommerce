@@ -17,12 +17,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
-        // view()->composer('*', function ($view) {
-        //     $viewName = $view->getName();
-        //     if (!str_starts_with($viewName, 'admin.')) {
-        //         $view->with('categories', Category::all());
-        //         $view->with('siteInfos', SiteInfo::pluck('value', 'key')->toArray());
-        //     }
-        // });
+
+        view()->composer(['layouts.app', 'layouts.header', 'layouts.footer'], function ($view) {
+            static $siteInfos = null;
+            if ($siteInfos === null) {
+                $siteInfos = SiteInfo::pluck('value', 'key')->toArray();
+            }
+            $view->with('siteInfos', $siteInfos);
+        });
     }
 }
