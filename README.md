@@ -135,4 +135,4 @@ vendor/bin/pint --format agent
 ## License
 
 This project is open-source and available under the [MIT License](LICENSE).
-Auteur @didier GUin Dev Laravel/react native expo
+Auteur @didier GUin Dev Laravel/React Native Expo
